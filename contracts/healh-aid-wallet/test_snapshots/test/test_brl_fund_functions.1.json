@@ -17,7 +17,7 @@
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 10000
+                    "lo": 2000
                   }
                 }
               ]
@@ -37,12 +37,12 @@
               "function_name": "create_fund",
               "args": [
                 {
-                  "string": "procedure-001"
+                  "string": "surgery-001"
                 },
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 5000
+                    "lo": 1000
                   }
                 },
                 {
@@ -55,6 +55,8 @@
         }
       ]
     ],
+    [],
+    [],
     [
       [
         "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
@@ -65,12 +67,12 @@
               "function_name": "save_fund",
               "args": [
                 {
-                  "string": "procedure-001"
+                  "string": "surgery-001"
                 },
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 2000
+                    "lo": 500
                   }
                 }
               ]
@@ -80,8 +82,6 @@
         }
       ]
     ],
-    [],
-    [],
     []
   ],
   "ledger": {
@@ -227,7 +227,7 @@
                         "val": {
                           "i128": {
                             "hi": 0,
-                            "lo": 8000
+                            "lo": 1500
                           }
                         }
                       },
@@ -255,7 +255,7 @@
                           "map": [
                             {
                               "key": {
-                                "string": "procedure-001"
+                                "string": "surgery-001"
                               },
                               "val": {
                                 "map": [
@@ -266,7 +266,7 @@
                                     "val": {
                                       "i128": {
                                         "hi": 0,
-                                        "lo": 2000
+                                        "lo": 500
                                       }
                                     }
                                   },
@@ -275,7 +275,7 @@
                                       "symbol": "id"
                                     },
                                     "val": {
-                                      "string": "procedure-001"
+                                      "string": "surgery-001"
                                     }
                                   },
                                   {
@@ -293,7 +293,7 @@
                                     "val": {
                                       "i128": {
                                         "hi": 0,
-                                        "lo": 5000
+                                        "lo": 1000
                                       }
                                     }
                                   }
@@ -385,7 +385,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 10000
+                                      "lo": 2000
                                     }
                                   }
                                 },
@@ -448,7 +448,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 5000
+                                      "lo": 1000
                                     }
                                   }
                                 },
@@ -471,7 +471,7 @@
                                     "symbol": "fund_id"
                                   },
                                   "val": {
-                                    "string": "procedure-001"
+                                    "string": "surgery-001"
                                   }
                                 },
                                 {
@@ -513,7 +513,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 2000
+                                      "lo": 500
                                     }
                                   }
                                 },
@@ -536,7 +536,7 @@
                                     "symbol": "fund_id"
                                   },
                                   "val": {
-                                    "string": "procedure-001"
+                                    "string": "surgery-001"
                                   }
                                 },
                                 {

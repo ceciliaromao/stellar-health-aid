@@ -3,3 +3,4 @@
 
 mod contract;
 mod test;
+mod integration_test;

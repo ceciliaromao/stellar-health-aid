@@ -17,7 +17,7 @@
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 10000
+                    "lo": 1000
                   }
                 }
               ]
@@ -34,19 +34,13 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM",
-              "function_name": "create_fund",
+              "function_name": "invest",
               "args": [
-                {
-                  "string": "procedure-001"
-                },
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 5000
+                    "lo": 1000
                   }
-                },
-                {
-                  "string": "Heart Surgery"
                 }
               ]
             }
@@ -55,6 +49,8 @@
         }
       ]
     ],
+    [],
+    [],
     [
       [
         "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
@@ -62,15 +58,37 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM",
-              "function_name": "save_fund",
+              "function_name": "redeem",
               "args": [
-                {
-                  "string": "procedure-001"
-                },
                 {
                   "i128": {
                     "hi": 0,
-                    "lo": 2000
+                    "lo": 300
+                  }
+                }
+              ]
+            }
+          },
+          "sub_invocations": []
+        }
+      ]
+    ],
+    [],
+    [],
+    [],
+    [
+      [
+        "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+        {
+          "function": {
+            "contract_fn": {
+              "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM",
+              "function_name": "redeem",
+              "args": [
+                {
+                  "i128": {
+                    "hi": 0,
+                    "lo": 0
                   }
                 }
               ]
@@ -166,6 +184,39 @@
             "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
             "key": {
               "ledger_key_nonce": {
+                "nonce": 4837995959683129791
+              }
+            },
+            "durability": "temporary"
+          }
+        },
+        [
+          {
+            "last_modified_ledger_seq": 0,
+            "data": {
+              "contract_data": {
+                "ext": "v0",
+                "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+                "key": {
+                  "ledger_key_nonce": {
+                    "nonce": 4837995959683129791
+                  }
+                },
+                "durability": "temporary",
+                "val": "void"
+              }
+            },
+            "ext": "v0"
+          },
+          6311999
+        ]
+      ],
+      [
+        {
+          "contract_data": {
+            "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+            "key": {
+              "ledger_key_nonce": {
                 "nonce": 5541220902715666415
               }
             },
@@ -227,7 +278,7 @@
                         "val": {
                           "i128": {
                             "hi": 0,
-                            "lo": 8000
+                            "lo": 1000
                           }
                         }
                       },
@@ -252,55 +303,7 @@
                           ]
                         },
                         "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "string": "procedure-001"
-                              },
-                              "val": {
-                                "map": [
-                                  {
-                                    "key": {
-                                      "symbol": "current_amount"
-                                    },
-                                    "val": {
-                                      "i128": {
-                                        "hi": 0,
-                                        "lo": 2000
-                                      }
-                                    }
-                                  },
-                                  {
-                                    "key": {
-                                      "symbol": "id"
-                                    },
-                                    "val": {
-                                      "string": "procedure-001"
-                                    }
-                                  },
-                                  {
-                                    "key": {
-                                      "symbol": "procedure_name"
-                                    },
-                                    "val": {
-                                      "string": "Heart Surgery"
-                                    }
-                                  },
-                                  {
-                                    "key": {
-                                      "symbol": "target_amount"
-                                    },
-                                    "val": {
-                                      "i128": {
-                                        "hi": 0,
-                                        "lo": 5000
-                                      }
-                                    }
-                                  }
-                                ]
-                              }
-                            }
-                          ]
+                          "map": []
                         }
                       },
                       {
@@ -363,7 +366,7 @@
                           ]
                         },
                         "val": {
-                          "u64": 3
+                          "u64": 4
                         }
                       },
                       {
@@ -385,7 +388,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 10000
+                                      "lo": 1000
                                     }
                                   }
                                 },
@@ -448,7 +451,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 5000
+                                      "lo": 1000
                                     }
                                   }
                                 },
@@ -457,7 +460,7 @@
                                     "symbol": "description"
                                   },
                                   "val": {
-                                    "string": "Fund created for procedure"
+                                    "string": "Investment in DeFindex/Blend"
                                   }
                                 },
                                 {
@@ -470,9 +473,7 @@
                                   "key": {
                                     "symbol": "fund_id"
                                   },
-                                  "val": {
-                                    "string": "procedure-001"
-                                  }
+                                  "val": "void"
                                 },
                                 {
                                   "key": {
@@ -497,7 +498,7 @@
                                   "val": {
                                     "vec": [
                                       {
-                                        "symbol": "FundCreate"
+                                        "symbol": "Invest"
                                       }
                                     ]
                                   }
@@ -513,7 +514,7 @@
                                   "val": {
                                     "i128": {
                                       "hi": 0,
-                                      "lo": 2000
+                                      "lo": 300
                                     }
                                   }
                                 },
@@ -522,7 +523,7 @@
                                     "symbol": "description"
                                   },
                                   "val": {
-                                    "string": "Money saved to fund"
+                                    "string": "Redemption from DeFindex/Blend"
                                   }
                                 },
                                 {
@@ -535,9 +536,7 @@
                                   "key": {
                                     "symbol": "fund_id"
                                   },
-                                  "val": {
-                                    "string": "procedure-001"
-                                  }
+                                  "val": "void"
                                 },
                                 {
                                   "key": {
@@ -562,7 +561,70 @@
                                   "val": {
                                     "vec": [
                                       {
-                                        "symbol": "FundSave"
+                                        "symbol": "Redeem"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "map": [
+                                {
+                                  "key": {
+                                    "symbol": "amount"
+                                  },
+                                  "val": {
+                                    "i128": {
+                                      "hi": 0,
+                                      "lo": 700
+                                    }
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "description"
+                                  },
+                                  "val": {
+                                    "string": "Redemption from DeFindex/Blend"
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "destination"
+                                  },
+                                  "val": "void"
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "fund_id"
+                                  },
+                                  "val": "void"
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "id"
+                                  },
+                                  "val": {
+                                    "u64": 4
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "timestamp"
+                                  },
+                                  "val": {
+                                    "u64": 0
+                                  }
+                                },
+                                {
+                                  "key": {
+                                    "symbol": "transaction_type"
+                                  },
+                                  "val": {
+                                    "vec": [
+                                      {
+                                        "symbol": "Redeem"
                                       }
                                     ]
                                   }
