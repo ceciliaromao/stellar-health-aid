@@ -1,4 +1,4 @@
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 
 const styles = {
   value: {

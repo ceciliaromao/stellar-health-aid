@@ -1,5 +1,5 @@
 import { PrettyJson } from "./PrettyJson";
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { LabelHeading } from "./LabelHeading";
 import { AnyObject } from "../types/types";
 

@@ -5,7 +5,7 @@ import { get } from "lodash";
 
 import { jsonSchema } from "../util/jsonSchema";
 
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { LabelHeading } from "./LabelHeading";
 
 import type {

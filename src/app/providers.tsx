@@ -16,21 +16,9 @@ export function Providers({ children }: Readonly<{ children: React.ReactNode }>)
   return (
     <CrossmintProvider apiKey={process.env.NEXT_PUBLIC_CROSSMINT_API_KEY || ""}>
       <CrossmintAuthProvider
-        authModalTitle="Welcome"
+        authModalTitle=""
         loginMethods={["google"]}
         appearance={customAppearance}
-        termsOfServiceText={
-          <p>
-            By continuing, you accept the{" "}
-            <a
-              href="https://www.crossmint.com/legal/terms-of-service"
-              target="_blank"
-            >
-              Wallet's Terms of Service
-            </a>
-            {", and to recieve marketing communications from Crossmint."}
-          </p>
-        }
       >
         <CrossmintWalletProvider
           appearance={customAppearance}

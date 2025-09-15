@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { ContractMetadata } from "../util/loadContractMetada";
 import {
   Badge,

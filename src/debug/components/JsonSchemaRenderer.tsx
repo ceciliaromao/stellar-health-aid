@@ -5,7 +5,7 @@ import type { JSONSchema7 } from "json-schema";
 
 import { jsonSchema } from "../util/jsonSchema";
 
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { LabelHeading } from "./LabelHeading";
 
 import { AnyObject, JsonSchemaFormProps } from "../types/types";

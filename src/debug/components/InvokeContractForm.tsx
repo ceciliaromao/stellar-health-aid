@@ -14,7 +14,7 @@ import {
 } from "@stellar/design-system";
 import { BASE_FEE, contract } from "@stellar/stellar-sdk";
 import { JSONSchema7 } from "json-schema";
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { useAccountSequenceNumber } from "../hooks/useAccountSequenceNumber";
 import { useRpcPrepareTx } from "../hooks/useRpcPrepareTx";
 import { useSimulateTx } from "../hooks/useSimulateTx";
