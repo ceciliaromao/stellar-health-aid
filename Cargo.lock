@@ -617,6 +617,7 @@ checksum = "84b26c544d002229e640969970a2e74021aadf6e2f96372b9c58eff97de08eb3"
 name = "health-aid-wallet"
 version = "0.0.1"
 dependencies = [
+ "provider-registry",
  "rand",
  "serde",
  "soroban-sdk",

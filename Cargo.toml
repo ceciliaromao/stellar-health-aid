@@ -47,6 +47,9 @@ tag = "v0.3.0"
 git = "https://github.com/OpenZeppelin/stellar-contracts"
 tag = "v0.4.1"
 
+[workspace.dependencies]
+provider-registry = { path = "contracts/provider-registry" }
+
 [profile.release]
 opt-level = "z"
 debug = false
