@@ -3,9 +3,11 @@ target
 .soroban
 .stellar
 
+
 # build output
 dist
 dist-ssr
+.next/
 
 # dependencies
 node_modules/
