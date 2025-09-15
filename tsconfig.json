@@ -1,15 +1,6 @@
 {
-  "files": [],
   "exclude": [
     "packages"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
   ],
   "compilerOptions": {
     "target": "ES2017",
@@ -34,7 +25,11 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

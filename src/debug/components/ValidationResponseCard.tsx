@@ -1,5 +1,5 @@
 import { Button, Card, Text } from "@stellar/design-system";
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 import { useState } from "react";
 
 type ValidationResponseCard = {

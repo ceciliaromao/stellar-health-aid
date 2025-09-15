@@ -4,7 +4,7 @@ import { JSONSchema7 } from "json-schema";
 import { get } from "lodash";
 import { Select } from "@stellar/design-system";
 
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 
 import { jsonSchema } from "../util/jsonSchema";
 

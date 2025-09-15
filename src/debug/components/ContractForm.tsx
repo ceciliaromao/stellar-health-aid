@@ -1,7 +1,7 @@
 import { Alert, Card, Text } from "@stellar/design-system";
 import { contract } from "@stellar/stellar-sdk";
 
-import { Box } from "../../components/layout/Box";
+import { Box } from "../../_components/layout/Box";
 
 import { InvokeContractForm } from "./InvokeContractForm";
 import { useWallet } from "../../hooks/useWallet";
