@@ -49,50 +49,51 @@ Repository participating in **HackMeridian 2025**
 ## 🗂️ Project Structure
 
 ```
-├── contracts/                # Contratos inteligentes (Rust/Soroban)
+
+├── contracts/                # Smart contracts (Rust/Soroban)
 │   ├── fungible-token-interface/
 │   ├── health-aid-wallet/
 │   ├── hello_world/
 │   ├── nft-enumerable/
 │   ├── provider-registry/
 │   └── ...
-│       └── src/              # Código dos contratos
-│       └── test.rs           # Testes dos contratos
-│       └── Cargo.toml        # Configuração do contrato
-│       └── test_snapshots/   # Resultados de testes
+│       └── src/              # Contract source code
+│       └── test.rs           # Contract tests
+│       └── Cargo.toml        # Contract configuration
+│       └── test_snapshots/   # Test results
 ├── src/
-│   ├── app/                  # App Router do Next.js
-│   │   ├── api/              # Handlers de API (Next.js Route Handlers)
+│   ├── app/                  # Next.js App Router
+│   │   ├── api/              # Next.js Route Handlers (API endpoints)
 │   │   │   ├── auth/
 │   │   │   ├── reflector/
 │   │   │   ├── contracts/
 │   │   │   └── wallet/
-│   │   ├── community/        # Páginas de comunidade e doação
-│   │   ├── dashboard/        # Páginas do dashboard (wallet, deposit, payment, profile)
-│   │   ├── history/          # Página de histórico de transações
-│   │   ├── kyc/              # Página de verificação de identidade
-│   │   ├── login/            # Página de login
-│   │   ├── _components/      # Componentes da landing page
+│   │   ├── community/        # Community and donation pages
+│   │   ├── dashboard/        # Dashboard pages (wallet, deposit, payment, profile)
+│   │   ├── history/          # Transaction history page
+│   │   ├── kyc/              # Identity verification page
+│   │   ├── login/            # Login page
+│   │   ├── _components/      # Landing page components
 │   │   └── ...
 │   ├── components/
-│   │   ├── molecules/        # Componentes reutilizáveis (cards, boxes, etc)
-│   │   ├── organisms/        # Componentes compostos (carousels, overviews)
-│   │   ├── ui/               # Componentes de UI (botão, input, etc)
-│   │   └── payment-success.tsx, back-page.tsx # Componentes utilitários globais
-│   ├── context/              # Providers de contexto (Auth, Wallet, etc)
-│   ├── hooks/                # Hooks customizados
-│   ├── lib/                  # Funções utilitárias e integração com APIs
-│   ├── types/                # Tipos globais (TypeScript)
-│   ├── util/                 # Funções utilitárias específicas
+│   │   ├── molecules/        # Reusable components (cards, boxes, etc)
+│   │   ├── organisms/        # Composite components (carousels, overviews)
+│   │   ├── ui/               # UI components (button, input, etc)
+│   │   └── payment-success.tsx, back-page.tsx # Global utility components
+│   ├── context/              # Context providers (Auth, Wallet, etc)
+│   ├── hooks/                # Custom hooks
+│   ├── lib/                  # Utility functions and API integrations
+│   ├── types/                # Global TypeScript types
+│   ├── util/                 # Project-specific utility functions
 ├── prisma/
-│   ├── schema.prisma         # Schema do banco de dados
-│   ├── migrations/           # Migrations do Prisma
+│   ├── schema.prisma         # Database schema
+│   ├── migrations/           # Prisma migrations
 ├── public/
-│   ├── images/               # Assets públicos (logos, mockups, etc)
-├── package.json              # Configuração do projeto Node.js
-├── Cargo.toml                # Configuração do workspace Rust
-├── .env                      # Variáveis de ambiente
-└── README.md                 # Documentação do projeto
+│   ├── images/               # Public assets (logos, mockups, etc)
+├── package.json              # Node.js project configuration
+├── Cargo.toml                # Rust workspace configuration
+├── .env                      # Environment variables
+└── README.md                 # Project documentation
 ```
 
 ## 💡 Features
