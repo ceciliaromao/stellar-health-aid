@@ -126,19 +126,6 @@ export function HistoryList({
             }
           />
         ))}
-        {truncated && showMoreLink && (
-          <div className="flex justify-center py-4">
-            <a
-              href={moreHref}
-              className="inline-flex items-center gap-3 border rounded-full px-6 py-2 text-sm font-medium hover:bg-muted transition-colors"
-            >
-              <span>Ver tudo</span>
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-yellow-400 text-black text-base">
-                <ArrowRight size={18} strokeWidth={2} />
-              </span>
-            </a>
-          </div>
-        )}
       </div>
     </section>
   );
