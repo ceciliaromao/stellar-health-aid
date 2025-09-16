@@ -45,6 +45,10 @@ Repository participating in **HackMeridian 2025**
   - **GitHub Actions**
     CI/CD for automating tests, builds, and deploys.
 
+### UI Design
+  - **Figma**
+    You can check it [here](https://www.figma.com/design/WbyQH5ocVgD5eb8FzYKr5J/Stellar-Health-Aid?node-id=0-1&p=f&t=BBMlX52xrA3cKqKD-0).
+
 -----
 
 ## 🗂️ Project Structure
