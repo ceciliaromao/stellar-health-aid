@@ -33,12 +33,12 @@ Repository participating in **HackMeridian 2025**
   - **ReactJS**
     Interactive and high-performance frontend SPA.
   - **Next.js**
-    SSR (Server Side Rendering) and optimized routes.
+    SSR (Server Side Rendering), optimized routing, and frontend application logic.
+  - **Next.js Route Handlers**
+    Backend API endpoints and server-side logic, fully integrated with Next.js.
   - **Stellar SDK**
     Integration with the Stellar blockchain for fast, low-cost transactions.
   - **Stellar Scaffold**
-  - **Node.js**
-    Backend, APIs, and support scripts.
 
 ### UI Design
   - **Figma**
@@ -49,21 +49,51 @@ Repository participating in **HackMeridian 2025**
 ## 🗂️ Project Structure
 
 ```
-/
-├── src/              # Main source code (TypeScript)
-│   ├── components/   # Reusable React components
-│   ├── contracts/    # Smart contracts (Rust)
-│   ├── pages/        # Next.js pages
-│   └── styles/       # CSS
-├── public/           # Static files/images
-├── tests/            # Unit/integration tests
-├── .github/          # CI/CD Workflows
-├── package.json      # Dependencies
-├── README.md         # Main documentation
-└── ...               # Other configuration files
+├── contracts/                # Contratos inteligentes (Rust/Soroban)
+│   ├── fungible-token-interface/
+│   ├── health-aid-wallet/
+│   ├── hello_world/
+│   ├── nft-enumerable/
+│   ├── provider-registry/
+│   └── ...
+│       └── src/              # Código dos contratos
+│       └── test.rs           # Testes dos contratos
+│       └── Cargo.toml        # Configuração do contrato
+│       └── test_snapshots/   # Resultados de testes
+├── src/
+│   ├── app/                  # App Router do Next.js
+│   │   ├── api/              # Handlers de API (Next.js Route Handlers)
+│   │   │   ├── auth/
+│   │   │   ├── reflector/
+│   │   │   ├── contracts/
+│   │   │   └── wallet/
+│   │   ├── community/        # Páginas de comunidade e doação
+│   │   ├── dashboard/        # Páginas do dashboard (wallet, deposit, payment, profile)
+│   │   ├── history/          # Página de histórico de transações
+│   │   ├── kyc/              # Página de verificação de identidade
+│   │   ├── login/            # Página de login
+│   │   ├── _components/      # Componentes da landing page
+│   │   └── ...
+│   ├── components/
+│   │   ├── molecules/        # Componentes reutilizáveis (cards, boxes, etc)
+│   │   ├── organisms/        # Componentes compostos (carousels, overviews)
+│   │   ├── ui/               # Componentes de UI (botão, input, etc)
+│   │   └── payment-success.tsx, back-page.tsx # Componentes utilitários globais
+│   ├── context/              # Providers de contexto (Auth, Wallet, etc)
+│   ├── hooks/                # Hooks customizados
+│   ├── lib/                  # Funções utilitárias e integração com APIs
+│   ├── types/                # Tipos globais (TypeScript)
+│   ├── util/                 # Funções utilitárias específicas
+├── prisma/
+│   ├── schema.prisma         # Schema do banco de dados
+│   ├── migrations/           # Migrations do Prisma
+├── public/
+│   ├── images/               # Assets públicos (logos, mockups, etc)
+├── package.json              # Configuração do projeto Node.js
+├── Cargo.toml                # Configuração do workspace Rust
+├── .env                      # Variáveis de ambiente
+└── README.md                 # Documentação do projeto
 ```
-
------
 
 ## 💡 Features
 
@@ -113,7 +143,47 @@ Repository participating in **HackMeridian 2025**
 
 3.  **Set up environment variables**
 
-      - Rename `.env.example` to `.env` and fill it with the necessary information (Stellar keys, endpoints, etc.).
+  - Create a `.env` file and add environment variables using the following pattern:
+
+```properties
+# Database Configuration
+PRISMA_DATABASE_URL="prisma+postgres://<user>:<password>@<host>:<port>/<database>?sslmode=require"         # Prisma connection string for the main database
+DATABASE_URL="postgres://<user>:<password>@<host>:<port>/<database>?sslmode=require"                       # Standard database connection string (Postgres)
+SHADOW_DATABASE_URL="postgres://<user>:<password>@<host>:<port>/<database>?sslmode=require"                # Shadow database for migrations and tests
+
+# Crossmint Configuration
+SERVER_CROSSMINT_API_KEY="sk_staging_..."    # API key for server-side Crossmint requests
+CROSSMINT_API_BASE_URL="https://staging.crossmint.com/api/2025-06-09"      # Base URL for Crossmint API
+NEXT_PUBLIC_CROSSMINT_API_KEY="ck_staging_..." # Public API key for client-side Crossmint requests
+NEXT_PUBLIC_CHAIN="stellar"       # Blockchain network used (Stellar)
+
+# Passkey Configuration (Client)
+NEXT_PUBLIC_STELLAR_RPC_URL="https://soroban-testnet.stellar.org" # RPC URL for Soroban/Stellar testnet
+NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE="Test SDF Network ; September 2015" # Network passphrase for Stellar
+
+# Passkey Configuration (Server)
+NEXT_PUBLIC_LAUNCHTUBE_URL="https://testnet.launchtube.xyz"  # LaunchTube API URL for passkey operations
+PRIVATE_LAUNCHTUBE_JWT="..."      # JWT for server authentication with LaunchTube
+NEXT_PUBLIC_MERCURY_URL="https://api.mercurydata.app"     # Mercury API URL for asset data
+PRIVATE_MERCURY_JWT="..."         # JWT for server authentication with Mercury
+PRIVATE_MERCURY_KEY="..."         # Mercury API key (generated via API)
+
+# Smart Wallet Configuration
+NEXT_PUBLIC_WALLET_WASM_HASH="..." # Wasm hash for smart wallet contract deployment
+NEXT_PUBLIC_NATIVE_CONTRACT_ADDRESS="..." # Native XLM contract address on Testnet
+
+# Soroban Secret Key
+SOROBAN_SECRET_KEY="..."          # Secret key for Soroban contract operations
+
+# Admin Keys (Server)
+ADMIN_PUBLIC_KEY="GC..."            # Public key for admin operations (provider creation)
+ADMIN_PRIVATE_KEY="SB..."           # Private key for admin operations
+REGISTRY_ADDRESS="CB..."            # Registry contract address
+
+# DeFindex Configuration
+USDC_TOKEN_ADDRESS="CB..."          # USDC token address on Testnet
+DEFINDEX_CONTRACT="CB..."           # DeFindex contract address
+```
 
 4.  **Run the application**
 
