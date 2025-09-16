@@ -27,29 +27,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "Invalid session" }, { status: 401 });
     }
 
-    // 2) Accept email from client body; fallback to profile email if not provided
-    let email: string | undefined;
-    try {
-      const body = await req.json().catch(() => null);
-      email = body?.email;
-    } catch {}
+    const profile = await crossmintAuth.getUser(userId);
 
-    if (!email) {
-      try {
-        const profile = await crossmintAuth.getUser(userId);
-        email = profile.email ?? undefined;
-      } catch {}
-    }
-
-    if (!email) {
+    if (!profile.email) {
       return NextResponse.json({ ok: false, error: "Email is required" }, { status: 400 });
     }
 
     // 3) Upsert user by crossmintUserId and update email
     const user = await prisma.user.upsert({
       where: { crossmintUserId: userId },
-      update: { email, updatedAt: new Date() },
-      create: { crossmintUserId: userId, email },
+      update: { email: profile.email, updatedAt: new Date() },
+      create: { crossmintUserId: userId, email: profile.email },
       select: { id: true, email: true, publicKey: true, walletContractId: true },
     });
 

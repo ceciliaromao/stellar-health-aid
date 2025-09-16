@@ -7,11 +7,11 @@ type DeployOverrides = {
   defindex?: string;
 };
 
-async function syncAuth(email?: string) {
+async function syncAuth() {
   const res = await fetch("/api/auth/sync", {
     method: "POST",
+    next: { revalidate: 0 },  // desabilita cache
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(email ? { email } : {}),
     credentials: "include",
   });
   if (!res.ok) throw new Error(`sync failed: ${res.status}`);
@@ -29,6 +29,7 @@ async function syncAuth(email?: string) {
 async function createWallet(userId: string, storeSecret = false) {
   const res = await fetch("/api/wallet/create", {
     method: "POST",
+        next: { revalidate: 0 },  // desabilita cache
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, storeSecret }),
     credentials: "include",
@@ -40,6 +41,7 @@ async function createWallet(userId: string, storeSecret = false) {
 async function fundWallet(userId: string) {
   const res = await fetch("/api/wallet/fund", {
     method: "POST",
+    next: { revalidate: 0 },  // desabilita cache
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId }),
     credentials: "include",
@@ -51,6 +53,7 @@ async function fundWallet(userId: string) {
 async function deployWallet(userId: string, overrides?: DeployOverrides) {
   const res = await fetch("/api/contracts/wallet/deploy", {
     method: "POST",
+    next: { revalidate: 0 },  // desabilita cache
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, ...overrides }),
     credentials: "include",
@@ -81,7 +84,7 @@ export function useWalletOnboarding() {
     }) => {
       const { email, storeSecret = false, overrides, forceDeploy = false } = params;
 
-      const { user } = await syncAuth(email);
+      const { user } = await syncAuth();
       console.log("useWalletOnboarding user", user);
 
       // Se email foi selecionado e não bate com a sessão atual, faz logout para limpar estado

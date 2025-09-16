@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     if (!userPublic) return NextResponse.json({ error: "user publicKey not found" }, { status: 400 });
 
   // Executa deploy via Soroban RPC helper (com overrides opcionais)
-  const contractId = await setupHealthAidWallet(userPublic, { registry, usdc, defindex });
+  const contractId = await setupHealthAidWallet(userPublic);
 
     if (contractId) {
       await prisma.user.update({ where: { id: user.id }, data: { walletContractId: contractId, deployStatus: "deployed" } });

@@ -86,16 +86,16 @@ Setup of Stellar Smart Wallet
   console.log("WASM uploaded with hash:", wasmHash);
   console.log("Deploying contract...");
 
-  const REGISTRY = opts?.registry || process.env.REGISTRY_ADDRESS!;
-  const USDC = opts?.usdc || process.env.USDC_TOKEN_ADDRESS!;
-  const DEFINDEX = opts?.defindex || process.env.DEFINDEX_CONTRACT!;
+  const REGISTRY = process.env.REGISTRY_ADDRESS!;
+  const USDC = process.env.USDC_TOKEN_ADDRESS!;
+  const DEFINDEX = process.env.DEFINDEX_CONTRACT!;
 
   // Se USDC começar com 'C', assume que é o contractId; se começar com 'G', assume issuer
   const usdcContractId = USDC.startsWith("C")
     ? USDC
     : new Asset("USDC", USDC).contractId(stellarNetwork);
 
-  const toAddr = (s: string) => nativeToScVal(s, { type: "address" });
+  const toAddr = (s: string) => nativeToScVal(new Address(s), { type: "address" });
 
   const deployTx = new TransactionBuilder(issuerAccount, {
     fee: inclusionFee.toString(),
