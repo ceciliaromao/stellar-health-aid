@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useId } from "react";
+import { useEffect, useRef } from "react";
 import { Html5Qrcode, Html5QrcodeScannerState } from "html5-qrcode";
 
 interface QrScannerProps {
@@ -13,8 +13,8 @@ interface QrScannerProps {
 }
 
 export function QrScanner({ onResult, onError, fps = 10, qrbox = 250, frameErrorIntervalMs = 1500 }: Readonly<QrScannerProps>) {
-  const reactId = useId();
-  const containerId = useRef(`qr-reader-container-${reactId}`);
+  // Gera id apenas no client para evitar mismatch SSR
+  const containerId = useRef(`qr-reader-container-${Math.random().toString(36).slice(2)}`);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   const lastFrameErrorRef = useRef<number>(0);
 

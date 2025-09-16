@@ -17,7 +17,7 @@ export interface CommunityItem {
 }
 
 function formatCurrency(v: number) {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 }).format(v).replace("R$", "").trim();
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 }).format(v).replace("", "").trim();
 }
 
 const priorityLabel: Record<CommunityItem["priority"], { text: string; color: string }> = {

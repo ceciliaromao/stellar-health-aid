@@ -1,10 +1,13 @@
 "use client";
-import { useState } from "react";
-import { getCampaign } from "@/data/community";
-import { useParams, useRouter } from "next/navigation";
+import { BackPage } from "@/components/back-page";
 import CampaignOverview from "@/components/molecules/campaign-overview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getCampaign } from "@/data/community";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function DonatePage() {
   const params = useParams<{ id: string }>();
@@ -17,15 +20,18 @@ export default function DonatePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Simular processamento e redirecionar
-    setTimeout(() => router.push(`/community/${campaign.id}/donate/success?amount=${amount}`), 600);
+    setTimeout(
+      () =>
+        router.push(
+          `/community/${campaign.id}/donate/success?amount=${amount}`
+        ),
+      600
+    );
   };
 
   return (
     <div className="max-w-md mx-auto w-full px-6 py-6 space-y-8">
-      <header className="flex items-center gap-2">
-        <button onClick={() => router.back()} aria-label="Voltar" className="p-2 -ml-2 rounded-full hover:bg-black/5">←</button>
-        <h1 className="text-lg font-semibold">Faça uma doação</h1>
-      </header>
+      <BackPage title="Faça uma doação" backHref="/dashboard/wallet" />
       <div>
         <h2 className="text-sm font-semibold mb-3">Visão geral da campanha</h2>
         <CampaignOverview campaign={campaign} />
@@ -40,7 +46,9 @@ export default function DonatePage() {
               className="border-0 shadow-none focus-visible:ring-0 p-0 h-8 text-base font-semibold"
               inputMode="decimal"
             />
-            <div className="text-xs text-muted-foreground ml-auto">Saldo total: 1.390,05 BRL</div>
+            <div className="text-xs text-muted-foreground ml-auto">
+              Saldo total: 1.390,05 BRL
+            </div>
             <button
               type="button"
               onClick={() => setAmount("100.00")}
@@ -51,10 +59,18 @@ export default function DonatePage() {
           </div>
         </div>
         <div className="flex gap-4 pt-4">
-          <Button type="button" variant="outline" className="flex-1 rounded-full h-12" onClick={() => router.back()}>
+          <Button
+            type="button"
+            variant="outline"
+            className="flex-1 rounded-full h-12"
+            onClick={() => router.back()}
+          >
             Cancelar
           </Button>
-            <Button type="submit" className="flex-1 rounded-full h-12 bg-yellow-400 hover:bg-yellow-400/90 text-black font-semibold">
+          <Button
+            type="submit"
+            className="flex-1 rounded-full h-12 bg-yellow-400 hover:bg-yellow-400/90 text-black font-semibold"
+          >
             Confirmar doação
           </Button>
         </div>

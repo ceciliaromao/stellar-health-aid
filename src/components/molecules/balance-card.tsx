@@ -5,52 +5,55 @@ import { cn } from "@/lib/utils";
 
 interface BalanceCardProps {
   balanceBRL: number;
+  balanceUSDC: number;
   currency?: string; // padrão BRL
   className?: string;
 }
 
 export function BalanceCard({
   balanceBRL,
+  balanceUSDC,
   currency = "BRL",
   className,
 }: BalanceCardProps) {
   const [visible, setVisible] = useState(true);
 
-  const formatted = new Intl.NumberFormat("pt-BR", {
+  const formattedBRL = new Intl.NumberFormat("pt-BR", {
     style: "currency",
-    currency,
+    currency: "BRL",
     minimumFractionDigits: 2,
-  })
-    .format(balanceBRL)
-    .replace("R$", "$")
-    .replace(/\s/g, " ");
+  }).format(balanceBRL);
+
+  const formattedUSDC = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(balanceUSDC);
 
   return (
     <div
       className={cn(
         "relative rounded-2xl p-5 text-black overflow-hidden shadow-sm",
-        // Gradient customizado solicitado
         "bg-[linear-gradient(135deg,#F7E06D_0%,#F2D43D_100%)]",
         className
       )}
     >
-      <div className="text-sm font-medium mb-2">Saldo total</div>
-      <div className="flex items-end gap-2">
-        <div className="text-4xl font-bold tracking-tight tabular-nums">
-          {visible ? formatted.split(",")[0] : "****"}
-          <span className="text-gray-700 font-semibold">
-            ,{visible ? formatted.split(",")[1] : "**"}
+      <div className="text-sm font-medium mb-2"></div>
+      <div className="flex flex-col items-start gap-1">
+        <div className="w-full flex justify-between items-end gap-2">
+          <span className="text-4xl font-bold tracking-tight tabular-nums">
+            {visible ? formattedBRL : "****"}
           </span>
-          <span className="ml-2 text-sm font-semibold">{currency}</span>
+          <button
+            type="button"
+            onClick={() => setVisible((v) => !v)}
+            className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/70 hover:bg-white focus:outline-none focus:ring-2 focus:ring-black/30 transition"
+            aria-label={visible ? "Ocultar saldo" : "Mostrar saldo"}
+          >
+            {visible ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setVisible((v) => !v)}
-          className="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/70 hover:bg-white focus:outline-none focus:ring-2 focus:ring-black/30 transition"
-          aria-label={visible ? "Ocultar saldo" : "Mostrar saldo"}
-        >
-          {visible ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
+        <span className="text-xs text-muted-foreground ml-1">{visible ? formattedUSDC : "****"} USDC</span>
       </div>
     </div>
   );

@@ -12,7 +12,6 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useWalletOnboarding } from "@/hooks/useWalletOnboarding";
-import { on } from "events";
 
 export function AuthCrossmint() {
   const { status: authStatus } = useAuth();

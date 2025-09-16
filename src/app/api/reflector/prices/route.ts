@@ -45,14 +45,11 @@ export async function GET() {
     // Simulate transaction
     const sim = await server.simulateTransaction(tx);
 
-    console.log("[reflector/prices] Simulation ok");
-
     // Read returned values
     let decodedValue: unknown = null;
     if (sim.result && sim.result.retval) {
       // console.log("Raw return value:", sim.result.retval);
       decodedValue = scValToNative(sim.result.retval);
-      console.log("[reflector/prices] Decoded return type:", typeof decodedValue);
     }
 
     // Helper para serializar BigInt de forma segura em JSON

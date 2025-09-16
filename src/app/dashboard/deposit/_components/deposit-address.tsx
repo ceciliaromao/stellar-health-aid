@@ -5,6 +5,7 @@ import QRCodeBox from "./qr-code-box";
 import Image from "next/image";
 import { Copy } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface DepositAddressProps {
   asset: string;
@@ -18,6 +19,26 @@ interface DepositAddressProps {
 }
 
 export default function DepositAddress({ asset, addressData, onBack }: DepositAddressProps) {
+  // Estados do fluxo
+  const [step, setStep] = useState<'scan' | 'wallet' | 'sending' | 'success'>('scan');
+  const [mockWallet, setMockWallet] = useState<string | null>(null);
+
+  // Simula leitura do QR code e geração da carteira
+  useEffect(() => {
+    if (step === 'scan') {
+      const timer = setTimeout(() => {
+        setMockWallet('GBMOCKWALLET1234567890MOCKWALLET1234567890MOCKWALLET');
+        setStep('wallet');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+    if (step === 'sending') {
+      const timer = setTimeout(() => {
+        setStep('success');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [step]);
   return (
     <div className="p-6 flex flex-col gap-6">
       <div className="flex items-center gap-2">
@@ -27,14 +48,43 @@ export default function DepositAddress({ asset, addressData, onBack }: DepositAd
         <h2 className="text-xl font-bold">Endereço {asset}</h2>
       </div>
       <Card className="flex flex-col items-center p-6 gap-4">
-        <div className="relative flex flex-col items-center">
-          {/* QR Code com borda amarela */}
-          <div className="mt-8 p-2 rounded-xl border-4 border-yellow-400 bg-white">
-            <QRCodeBox value={addressData.address} />
+        {step === 'scan' && (
+          <div className="relative flex flex-col items-center">
+            <div className="mt-8 p-2 rounded-xl border-4 border-yellow-400 bg-white">
+              <QRCodeBox value={addressData.address} />
+            </div>
+            <span className="mt-4 text-sm text-muted-foreground animate-pulse">Aguarde, preparando depósito...</span>
           </div>
-        </div>
+        )}
+        {step === 'wallet' && mockWallet && (
+          <div className="flex flex-col items-center gap-2 w-full">
+            <span className="text-xs text-muted-foreground">Carteira detectada</span>
+            <span className="font-mono text-sm break-all">{mockWallet}</span>
+            <Button className="mt-4 w-full" onClick={() => setStep('sending')}>
+              Enviar depósito
+            </Button>
+          </div>
+        )}
+        {step === 'sending' && (
+          <div className="flex flex-col items-center w-full">
+            <span className="text-sm text-muted-foreground animate-pulse">Enviando depósito...</span>
+            <div className="mt-4 w-full flex justify-center">
+              <div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
+            </div>
+          </div>
+        )}
+        {step === 'success' && (
+          <div className="flex flex-col items-center w-full">
+            <span className="text-lg font-bold text-green-600">Depósito realizado com sucesso!</span>
+            <Button className="mt-4 w-full" onClick={onBack}>
+              Voltar
+            </Button>
+          </div>
+        )}
+      </Card>
+      {/* Dados do endereço, memo, ativo, rede (mostra apenas no scan) */}
+      {step === 'scan' && (
         <div className="w-full flex flex-col gap-4 mt-2">
-          {/* Endereço */}
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Endereço</span>
             <div className="flex items-center gap-4">
@@ -44,7 +94,6 @@ export default function DepositAddress({ asset, addressData, onBack }: DepositAd
               </Button>
             </div>
           </div>
-          {/* Memo */}
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Memo</span>
             <div className="flex items-center gap-4">
@@ -54,7 +103,6 @@ export default function DepositAddress({ asset, addressData, onBack }: DepositAd
               </Button>
             </div>
           </div>
-          {/* Ativo */}
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Ativo</span>
             <div className="flex items-center gap-2">
@@ -62,32 +110,35 @@ export default function DepositAddress({ asset, addressData, onBack }: DepositAd
               <span className="font-medium">{addressData.asset}</span>
             </div>
           </div>
-          {/* Rede */}
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Rede</span>
             <span className="font-medium">{addressData.network}</span>
           </div>
         </div>
-      </Card>
-      <WarningBox>
-        Certifique-se de depositar USDC da rede Stellar e depositar seu Memo. Caso contrário, você perderá seus fundos.
-      </WarningBox>
-      <div className="flex gap-2 mt-4">
-        <Button variant="outline" className="flex-1" onClick={onBack}>Voltar ao início</Button>
-        <Button className="flex-1" onClick={() => {
-          if (navigator.share) {
-            navigator.share({
-              title: `Deposite dinheiro aqui`,
-              text: `Endereço: ${addressData.address}\nMemo: ${addressData.memo}\nAtivo: ${addressData.asset}\nRede: ${addressData.network}`,
-              url: window.location.href,
-            });
-          } else {
-            alert("Compartilhamento não suportado neste dispositivo.");
-          }
-        }}>
-          Compartilhar
-        </Button>
-      </div>
+      )}
+      {step === 'scan' && (
+        <WarningBox>
+          Certifique-se de depositar USDC da rede Stellar e depositar seu Memo. Caso contrário, você perderá seus fundos.
+        </WarningBox>
+      )}
+      {step === 'scan' && (
+        <div className="flex gap-2 mt-4">
+          <Button variant="outline" className="flex-1" onClick={onBack}>Voltar ao início</Button>
+          <Button className="flex-1" onClick={() => {
+            if (navigator.share) {
+              navigator.share({
+                title: `Deposite dinheiro aqui`,
+                text: `Endereço: ${addressData.address}\nMemo: ${addressData.memo}\nAtivo: ${addressData.asset}\nRede: ${addressData.network}`,
+                url: window.location.href,
+              });
+            } else {
+              alert("Compartilhamento não suportado neste dispositivo.");
+            }
+          }}>
+            Compartilhar
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

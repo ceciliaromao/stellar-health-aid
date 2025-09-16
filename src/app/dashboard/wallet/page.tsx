@@ -1,3 +1,6 @@
+"use client";
+import { useConvertUsdToBrl } from "@/hooks/useConvertUsdToBrl";
+
 import HistoryList from "@/components/organisms/history";
 import { WalletOverview } from "@/components/organisms/wallet-overview";
 import SectionHeader from "@/components/molecules/section-header";
@@ -5,6 +8,7 @@ import { ActionCircle, ActionCirclesRow } from "@/components/molecules/action-ci
 import { ArrowDownToLine, QrCode, Users } from "lucide-react";
 import CommunityCarousel from "@/components/organisms/community-carousel";
 import type { CommunityItem } from "@/components/molecules/community-card";
+import { useEffect, useState } from "react";
 
 const communityMock: CommunityItem[] = [
   {
@@ -37,9 +41,27 @@ const communityMock: CommunityItem[] = [
 ];
 
 export default function WalletPage() {
+  const { convertUsdToBrl, loading, error } = useConvertUsdToBrl();
+  const [convertedBRL, setConvertedBRL] = useState<number | null>(null);
+
+  // Valor mockado em USD
+  const usdValue = 100;
+
+  useEffect(() => {
+    convertUsdToBrl(usdValue).then((result) => {
+      setConvertedBRL(result);
+    });
+  }, [usdValue, convertUsdToBrl]);
+  // Valor mockado em USD
+
   return (
     <div className="mx-auto w-full px-6 space-y-10">
-      <WalletOverview name="João" balanceBRL={490.05} yieldBRL={40} apyPercent={5} />
+      <WalletOverview
+        balanceBRL={convertedBRL ?? 0}
+        balanceUSDC={usdValue}
+        yieldBRL={40}
+        apyPercent={5}
+      />
 
       {/* Ações rápidas */}
       <ActionCirclesRow>
@@ -55,7 +77,7 @@ export default function WalletPage() {
 
       <div>
         <SectionHeader title="Últimas atividades" href="/history" />
-        <HistoryList limit={5} title="" />
+        <HistoryList limit={5} balanceBRL={convertedBRL ?? 0} title="" />
       </div>
     </div>
   );

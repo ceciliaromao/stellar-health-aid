@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { QrScanner } from "./_components/qr-scanner";
 import { useToast } from "@/hooks/use-toast";
+import { PaymentSuccess } from "@/components/payment-success";
 
 export default function PaymentPage() {
   const [scannedData, setScannedData] = useState<null | {
@@ -12,6 +13,17 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+
+  // Redireciona automaticamente após 3 segundos simulando escaneamento
+  const [showSuccess, setShowSuccess] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!scannedData) {
+        setShowSuccess(true);
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [scannedData]);
 
   const parsePayload = (text: string) => {
     // Exemplo de payload esperado: provider|valueBRL|valueUSD|concept|address
@@ -51,7 +63,9 @@ export default function PaymentPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] p-6">
-      {!scannedData ? (
+      {showSuccess ? (
+        <PaymentSuccess onRedirect={() => router.push("/login")} />
+      ) : !scannedData ? (
         <div className="flex flex-col items-center gap-5 w-full max-w-md">
           <div className="relative">
             <div className="relative bg-white rounded-[28px] shadow-md p-2">
@@ -80,7 +94,7 @@ export default function PaymentPage() {
             <span className="text-lg font-bold">{scannedData.provider}</span>
           </div>
           <div className="text-4xl font-bold text-primary">
-            R$ {scannedData.valueBRL.toFixed(2)} <span className="text-base text-muted-foreground">({scannedData.valueUSD} USD)</span>
+            {scannedData.valueBRL.toFixed(2)} BRL <span className="text-base text-muted-foreground">({scannedData.valueUSD} USD)</span>
           </div>
           <div className="text-sm text-muted-foreground mb-2">{scannedData.concept}</div>
           <div className="text-xs break-all mb-4">
