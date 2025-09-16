@@ -59,7 +59,6 @@ Repository participating in **HackMeridian 2025**
 ├── tests/            # Unit/integration tests
 ├── .github/          # CI/CD Workflows
 ├── package.json      # Dependencies
-├── Dockerfile        # Containerization
 ├── README.md         # Main documentation
 └── ...               # Other configuration files
 ```
