@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthProvider";
-import { WalletProvider } from "@/context/WalletProvider";
-import { DonationQueueProvider } from "@/context/DonationQueueProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
@@ -35,14 +32,14 @@ export default function RootLayout({
         className={`${poppins.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <Providers>
-          <AuthProvider>
+          {/* <AuthProvider>
             <WalletProvider>
-              <DonationQueueProvider>
+              <DonationQueueProvider> */}
                 {children}
                 <Toaster />
-              </DonationQueueProvider>
+              {/* </DonationQueueProvider>
             </WalletProvider>
-          </AuthProvider>
+          </AuthProvider> */}
         </Providers>
       </body>
     </html>

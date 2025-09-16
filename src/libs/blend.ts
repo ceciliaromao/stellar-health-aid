@@ -259,7 +259,12 @@ export async function getYieldHistory(
     // return history
 
     // Mock yield history for development
-    const history = []
+    const history: Array<{
+      date: Date
+      earned: number
+      apy: number
+      poolId: string
+    }> = []
     for (let i = days; i >= 0; i--) {
       const date = new Date()
       date.setDate(date.getDate() - i)
