@@ -1,48 +1,53 @@
-# Stellar Health Aid
+# 💉 Stellar Health Aid
 
 Repository participating in **HackMeridian 2025**
+*Social innovation and technology to transform healthcare via Web3\!*
+
+> [\!CAUTION]
+> This project has not been tested to its limits. We are in the process of improving it. Everything is being done on the testnet.
+> Please take this into consideration.
 
 -----
 
-## Overview
+## ✨ Overview
 
-**Stellar Health Aid** is a decentralized, self-custodial health wallet that gives control back to the user. In the private system, you pay every month, even if you don't use anything. With Stellar Health Aid, your money always remains yours. If you don't use it for 4 months, in the 5th month you will have an accumulated balance plus interest to cover medical expenses.
+**Stellar Health Aid** is a decentralized, self-custodial health wallet that gives control back to the user. In the private system, you pay every month, even if you use nothing. With Stellar Health Aid, your money always remains yours. If you don't use it for 4 months, in the 5th month you will have an accumulated balance + interest to cover medical expenses.
 
 -----
 
-## Technologies Used
+## 🛠️ Technologies and Languages Used
 
 ### Main Languages
 
   - **TypeScript (89.8%)**
-      - Used for the main frontend and backend development, ensuring static typing, scalability, and better code maintenance.
+    Used in the frontend and backend, ensuring static typing, scalability, and enhanced maintenance.
   - **Rust (7.9%)**
-      - Employed in the construction of smart contracts, due to its high performance, memory safety, and robustness.
+    Employed in building the smart contracts, offering high performance, memory safety, and robustness.
   - **CSS (2%)**
-      - Responsible for responsive design and styling of web pages, ensuring a modern and accessible user experience.
+    Responsible for the responsive design and styling, ensuring a modern and accessible experience.
   - **JavaScript (0.3%)**
-      - Used for auxiliary scripts and quick integration between modules.
+    Used for auxiliary scripts and quick integrations between modules.
 
 ### Frameworks and Tools
 
   - **ReactJS**
-      - Development of the SPA (Single Page Application) frontend, promoting interactivity and performance.
+    Interactive and high-performance frontend SPA.
   - **Next.js**
-      - Framework for SSR (Server Side Rendering) and optimized routes.
+    SSR (Server Side Rendering) and optimized routes.
   - **Stellar SDK**
-      - Library for integration with the Stellar blockchain, allowing for fast and low-cost transactions.
+    Integration with the Stellar blockchain for fast, low-cost transactions.
   - **Polkadot.js / Substrate**
-      - Interoperability and security in smart contracts, especially in the parts written in Rust.
+    Interoperability and security in smart contracts (Rust).
   - **Node.js**
-      - Execution environment for APIs, middlewares, and backend scripts.
+    Backend, APIs, and support scripts.
   - **Docker**
-      - Containerization of services to facilitate deployment and scalability.
+    Containerization to facilitate deployment and scalability.
   - **GitHub Actions**
-      - CI/CD for automating tests, builds, and deployments.
+    CI/CD for automating tests, builds, and deploys.
 
 -----
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 /
@@ -50,11 +55,11 @@ Repository participating in **HackMeridian 2025**
 │   ├── components/   # Reusable React components
 │   ├── contracts/    # Smart contracts (Rust)
 │   ├── pages/        # Next.js pages
-│   └── styles/       # CSS stylesheets
-├── public/           # Static files and images
-├── tests/            # Unit and integration tests
-├── .github/          # CI/CD workflows
-├── package.json      # Project dependencies
+│   └── styles/       # CSS
+├── public/           # Static files/images
+├── tests/            # Unit/integration tests
+├── .github/          # CI/CD Workflows
+├── package.json      # Dependencies
 ├── Dockerfile        # Containerization
 ├── README.md         # Main documentation
 └── ...               # Other configuration files
@@ -62,18 +67,57 @@ Repository participating in **HackMeridian 2025**
 
 -----
 
-## Features
+## 💡 Features
 
-  - **User registration and authentication**
-  - **Blockchain-tracked donations**
-  - **Digital wallet management**
-  - **Transaction transparency and auditing**
-  - **Interactive dashboard for tracking donations**
-  - **Modular system for integration with clinics and NGOs**
+  - User registration and authentication
+  - Blockchain-tracked donations
+  - Digital wallet management (deposit, withdrawal, yield)
+  - Transaction transparency and auditing
+  - Interactive dashboard for monitoring
+  - Modular system for integration with clinics and NGOs
+  - DeFi integrations (Blend, Defindex, Soroswap, Reflector)
 
 -----
 
-## How to Run
+## 🤝 DeFi Integrations
+
+### Blend
+
+  - **File:** [`src/libs/blend.ts`](https://www.google.com/search?q=src/libs/blend.ts)
+    Implements the connection to the Blend protocol for depositing, withdrawing, and tracking the yield of health funds.
+    Main functions:
+
+      - `initializeBlend`
+      - `getAvailablePools`
+      - `depositToBlend`
+      - `withdrawFromBlend`
+      - `getCurrentYieldRates`
+      - `autoCompoundYield`
+
+  - **Usage Flow:**
+    The integration is used within the wallet context in [`src/context/WalletProvider.tsx`](https://www.google.com/search?q=src/context/WalletProvider.tsx), allowing deposits and withdrawals via Blend directly from the user's dashboard.
+
+### Defindex
+
+  - **Rust File:** [`contracts/health-aid-wallet/src/contract.rs`](https://www.google.com/search?q=contracts/health-aid-wallet/src/contract.rs)
+    The `get_defindex_contract` function and balancing methods implement the bridge to Defindex at the smart contract layer.
+
+  - **Backend:**
+    The `defindex` parameter is used in the contract deployment endpoints, as seen in [`src/app/api/contracts/wallet/deploy/route.ts`](https://www.google.com/search?q=src/app/api/contracts/wallet/deploy/route.ts).
+
+### Reflector
+
+  - **API:** [`src/app/api/reflector/prices/route.ts`](https://www.google.com/search?q=src/app/api/reflector/prices/route.ts)
+    A Next.js endpoint that uses the Stellar Soroban SDK to get updated asset prices, integrating the Reflector protocol for swap operations and price queries.
+
+### Soroswap
+
+  - **Implicit via Reflector and Stellar SDK:**
+    The use of asset swaps is handled through contracts and endpoints that interact with Soroswap functionalities, utilizing the Stellar SDK and price endpoints.
+
+-----
+
+## 🚦 How to Run
 
 1.  **Clone the repository**
 
@@ -90,7 +134,7 @@ Repository participating in **HackMeridian 2025**
 
 3.  **Set up environment variables**
 
-      - Rename `.env.example` to `.env` and fill in the required data (Stellar keys, endpoints, etc.).
+      - Rename `.env.example` to `.env` and fill it with the necessary information (Stellar keys, endpoints, etc.).
 
 4.  **Run the application**
 
@@ -98,28 +142,22 @@ Repository participating in **HackMeridian 2025**
     npm run dev
     ```
 
-5.  **Smart contracts**
+5.  **Deploy the smart contracts**
 
-      - Access the `src/contracts` folder and follow the instructions in the specific README to deploy the Rust contracts.
+      - Go to the `src/contracts` folder and follow the instructions in the specific README to compile/deploy the Rust contracts.
 
 -----
 
-## Contributing
+## 📝 Contributing
 
 Contributions are welcome\!
 See the `CONTRIBUTING.md` file and follow our code of conduct.
 
 -----
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
-
------
-
-## Contact
-
-Questions or suggestions? Open an issue or contact the team via [GitHub issues](https://github.com/ceciliaromao/stellar-health-aid/issues).
 
 -----
 
