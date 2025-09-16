@@ -4,8 +4,6 @@ import CampaignOverview from "@/components/molecules/campaign-overview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getCampaign } from "@/data/community";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 

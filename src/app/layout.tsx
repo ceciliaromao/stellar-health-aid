@@ -1,8 +1,8 @@
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
-import { Providers } from "./providers";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "./providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",

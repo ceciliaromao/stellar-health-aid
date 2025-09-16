@@ -1,8 +1,8 @@
 "use client";
 import { BalanceCard } from "@/components/molecules/balance-card";
 import { YieldSummaryCard } from "@/components/molecules/yield-summary-card";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 interface WalletOverviewProps {
   name?: string;

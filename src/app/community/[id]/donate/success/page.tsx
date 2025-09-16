@@ -26,7 +26,7 @@ export default function DonationSuccessPage() {
           onClick={() => router.push("/dashboard/wallet")}
           className="h-14 rounded-full w-full max-w-sm mx-auto bg-yellow-400 hover:bg-yellow-400/90 text-black text-base font-medium"
         >
-          Voltar para casa
+          Voltar para home
         </Button>
       </div>
     </div>
