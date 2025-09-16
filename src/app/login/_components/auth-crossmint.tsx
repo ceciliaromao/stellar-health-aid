@@ -8,6 +8,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { EmbeddedAuthForm } from "@crossmint/client-sdk-react-ui";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 const data = [
@@ -63,13 +64,18 @@ export function AuthCrossmint() {
     <Drawer>
       <DrawerTrigger asChild>
         <DrawerHeader>
-          <Button className="w-full bg-primary text-black rounded-2xl">
+          <Button className="bg-primary w-full text-black rounded-2xl">
             Login
           </Button>
         </DrawerHeader>
       </DrawerTrigger>
       <DrawerContent>
-        <EmbeddedAuthForm />
+        <div className="w-full flex flex-col justify-center items-center gap-4 p-4">
+          <div className="sm:max-w-md">
+            <DialogTitle className="text-2xl font-bold text-center">You're almost there!</DialogTitle>
+            <EmbeddedAuthForm />
+          </div>
+        </div>
       </DrawerContent>
     </Drawer>
   );

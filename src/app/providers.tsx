@@ -12,26 +12,23 @@ const customAppearance = {
   },
 };
 
+const CLIENT_CROSSMINT_API_KEY = process.env.NEXT_PUBLIC_CROSSMINT_API_KEY || "";
+
 export function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
+
   return (
-    <CrossmintProvider apiKey={process.env.NEXT_PUBLIC_CROSSMINT_API_KEY || ""}>
+    <CrossmintProvider 
+      apiKey={CLIENT_CROSSMINT_API_KEY}
+    >
       <CrossmintAuthProvider
-        authModalTitle=""
-        loginMethods={["google"]}
+        loginMethods={["email"]} // Incluir email também
         appearance={customAppearance}
       >
+        {/* Remover createOnLogin temporariamente para isolar o problema */}
         <CrossmintWalletProvider
           appearance={customAppearance}
-          createOnLogin={{
-            chain: "stellar",
-            signer: {
-              type: "email",
-            },
-          }}
         >
-          {/* <SyncProvider> */}
-            {children}
-          {/* </SyncProvider> */}
+          {children}
         </CrossmintWalletProvider>
       </CrossmintAuthProvider>
     </CrossmintProvider>
