@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export function WelcomeCard() {
+export function Welcome() {
   return (
     <div className="w-full max-w-sm flex flex-col bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="w-full h-64 relative">
