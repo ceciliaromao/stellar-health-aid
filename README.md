@@ -73,7 +73,7 @@ Repository participating in **HackMeridian 2025**
   - Transaction transparency and auditing
   - Interactive dashboard for monitoring
   - Modular system for integration with clinics and NGOs
-  - DeFi integrations (Blend, Defindex, Soroswap, Reflector)
+  - DeFi integrations (Blend, Defindex, Reflector)
 
 -----
 
