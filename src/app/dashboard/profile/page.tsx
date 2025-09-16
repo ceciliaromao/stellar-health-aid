@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 
-interface ProfileFormData { name: string; email: string; cpf: string }
+interface ProfileFormData { name: string; email: string; cpf: string; profilePicture?: string }
 
 // Schema de validação com Zod
 const profileSchema = z.object({
@@ -16,6 +16,7 @@ const profileSchema = z.object({
     .string()
     .transform(v => v.replace(/\D/g, ""))
     .refine(v => v.length === 11, { message: "CPF deve ter 11 dígitos" }),
+  profilePicture: z.string().url().optional().or(z.literal("")),
 });
 
 const STORAGE_KEY = "app.profile";
@@ -23,7 +24,7 @@ const STORAGE_KEY = "app.profile";
 export default function ProfilePage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState<ProfileFormData>({ name: "", email: "", cpf: "" });
+  const [form, setForm] = useState<ProfileFormData>({ name: "", email: "", cpf: "", profilePicture: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileFormData, string>>>({});
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function ProfilePage() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        setForm({ name: parsed.name || "", email: parsed.email || "", cpf: parsed.cpf || "" });
+  setForm({ name: parsed.name || "", email: parsed.email || "", cpf: parsed.cpf || "", profilePicture: parsed.profilePicture || "" });
       }
     } catch {}
   }, []);
@@ -79,6 +80,25 @@ export default function ProfilePage() {
     }
   };
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Arquivo inválido", description: "Envie uma imagem.", variant: "destructive" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setForm(prev => ({ ...prev, profilePicture: result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeAvatar = () => {
+    setForm(prev => ({ ...prev, profilePicture: "" }));
+  };
+
   return (
     <div className="w-full max-w-md mx-auto px-6 py-8 flex flex-col gap-6">
       <header className="space-y-1">
@@ -86,7 +106,13 @@ export default function ProfilePage() {
         <p className="text-sm text-muted-foreground">Gerencie seus dados pessoais.</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        {/* Avatar centralizado */}
+        <ProfileAvatar
+          src={form.profilePicture}
+          onChangeFile={handleAvatarChange}
+          onRemove={form.profilePicture ? removeAvatar : undefined}
+        />
         <div className="flex flex-col gap-1">
           <Label htmlFor="name">Nome</Label>
           <Input id="name" name="name" value={form.name} onChange={handleFieldChange} placeholder="Seu nome" autoComplete="name" />
@@ -115,6 +141,46 @@ export default function ProfilePage() {
           {loading ? "Salvando..." : "Salvar"}
         </Button>
       </form>
+    </div>
+  );
+}
+
+// Componente de avatar reutilizável (interno a esta página por enquanto)
+interface ProfileAvatarProps {
+  src?: string;
+  onChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRemove?: () => void;
+}
+
+function ProfileAvatar({ src, onChangeFile, onRemove }: Readonly<ProfileAvatarProps>) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="relative group h-24 w-24 rounded-full overflow-hidden ring-2 ring-white shadow hover:shadow-md transition-shadow bg-gray-100 flex items-center justify-center"
+        aria-label={src ? "Alterar foto de perfil" : "Adicionar foto de perfil"}
+      >
+        {src ? (
+          <img src={src} alt="Avatar" className="object-cover h-full w-full" />
+        ) : (
+          <span className="text-xs text-muted-foreground">Adicionar foto</span>
+        )}
+        <span className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center text-white text-xs opacity-0 group-hover:opacity-100">Trocar</span>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onChangeFile}
+      />
+      {onRemove && (
+        <button type="button" onClick={onRemove} className="text-xs text-red-500 underline">
+          Remover
+        </button>
+      )}
     </div>
   );
 }

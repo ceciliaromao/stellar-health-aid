@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import DepositAssetSelect from "./_components/deposit-asset-select";
 import DepositAddress from "./_components/deposit-address";
@@ -22,10 +24,7 @@ export default function DepositScreen() {
   return (
     <div className="flex flex-col h-full">
       {!selectedAsset ? (
-        <DepositAssetSelect
-          assets={assets}
-          onSelect={setSelectedAsset}
-        />
+        <DepositAssetSelect assets={assets} onSelect={setSelectedAsset} />
       ) : (
         <DepositAddress
           asset={selectedAsset}
