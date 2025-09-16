@@ -1,7 +1,7 @@
 import { Card } from "@stellar/design-system";
 import { JSONSchema7 } from "json-schema";
 
-import { Box } from "../../_components/layout/Box";
+import { Box } from "@/components/molecules/box";
 import { LabelHeading } from "./LabelHeading";
 
 import {

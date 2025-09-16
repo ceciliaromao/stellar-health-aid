@@ -7,58 +7,21 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { EmbeddedAuthForm } from "@crossmint/client-sdk-react-ui";
+import { EmbeddedAuthForm, useAuth, useWallet } from "@crossmint/client-sdk-react-ui";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { useState } from "react";
-
-const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
-];
+import { useEffect, useState } from "react";
 
 export function AuthCrossmint() {
-  const [goal, setGoal] = useState(350);
+  const { status: authStatus } = useAuth();
 
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
-  }
+  const isLoggedIn = authStatus === "logged-in";
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Redirect to dashboard after login
+      window.location.href = "/dashboard";
+    } 
+  }, [isLoggedIn]);
 
   return (
     <Drawer>
@@ -72,7 +35,8 @@ export function AuthCrossmint() {
       <DrawerContent>
         <div className="w-full flex flex-col justify-center items-center gap-4 p-4">
           <div className="sm:max-w-md">
-            <DialogTitle className="text-2xl font-bold text-center">You're almost there!</DialogTitle>
+            <DialogTitle className="text-lg font-semibold text-center">Welcome</DialogTitle>
+            <hr className="bb-2 mt-4" />
             <EmbeddedAuthForm />
           </div>
         </div>

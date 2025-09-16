@@ -14,7 +14,7 @@ export default function LoginPage() {
   const isLoading = walletStatus === "in-progress" || authStatus === "initializing";
 
   return (
-    <main className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <main className="min-h-screen overflow-hidden relative flex justify-center items-center">
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={isAuthenticated ? "welcome" : isLoading ? "loading" : "steps"}
@@ -23,7 +23,7 @@ export default function LoginPage() {
           classNames="page-transition"
           unmountOnExit
         >
-          <div ref={nodeRef} className="w-full">
+          <div ref={nodeRef} className="w-full h-full flex flex-col justify-center items-center">
             {isAuthenticated ? <Welcome /> : <Steps />}
           </div>
         </CSSTransition>
