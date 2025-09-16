@@ -24,8 +24,7 @@ export const Carousel: React.FC<PropType> = (props) => {
   // Configurar autoplay
   const autoplayOptions = {
     delay: 4000, // 4 segundos
-    stopOnInteraction: true, // Para quando usuário interage
-    stopOnMouseEnter: true, // Para quando mouse entra
+    resetOnInteraction: true, // Reinicia autoplay após interação
     playOnInit: true // Inicia automaticamente
   };
 

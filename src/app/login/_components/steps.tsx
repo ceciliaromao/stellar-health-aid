@@ -39,9 +39,9 @@ const steps: StepDef[] = [
 
 export default function Steps() {
   return (
-    <div className="h-dvh max-h-dvh w-full max-w-xl flex flex-col justify-center items-center">
+    <div className="h-dvh max-h-dvh w-full max-w-xl flex flex-col justify-between items-center">
       <Carousel slides={steps} />
-      <div className="mx-auto max-w-sm h-full pb-8 text-center max-sm:pb-6">
+      <div className="mx-auto w-full max-w-sm pb-6 text-center">
         <AuthCrossmint />
         <p className="text-muted-foreground text-xs text-center">
           Ao efetuar login ou registrar-se, você concorda com nosso{" "}

@@ -1,10 +1,12 @@
 .embla {
   width: 100%;
-  margin: auto;
+  max-width: 100%;
+  height: 100%;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  overflow-x: hidden;
   /* Altura base do slide em telas pequenas */
   --slide-height: 100%;
   --slide-spacing: 1rem;
@@ -13,6 +15,8 @@
 
 .embla__viewport {
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .embla__container {
@@ -36,7 +40,7 @@
   justify-content: flex-start;
   height: var(--slide-height);
   user-select: none;
-  padding: 1rem;
+  padding: 0 1rem;
   gap: 1.5rem;
 }
 
@@ -49,14 +53,16 @@
   align-items: center;
   justify-content: center;
   min-height: 0; /* evita overflow em flexbox */
+  height: auto;
+  max-height: 350px;
 }
 
 .embla__slide__image {
   width: 100%;
   max-width: 100%;
-  height: auto;
+  height: 100%;
   max-height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* Mobile: imagem ocupa mais espaço */
@@ -74,6 +80,10 @@
   gap: 0.5rem;
   color: #000; /* força texto preto visível */
   flex: 0 0 auto; /* conteúdo mantém seu espaço natural abaixo da imagem */
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
 }
 .embla__controls {
   display: grid;
@@ -122,6 +132,7 @@
   justify-content: center; /* centraliza os dots abaixo do carrossel */
   align-items: center;
   margin: 0; /* remove margem lateral */
+  margin-top: 2rem;
 }
 .embla__dot {
   -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
