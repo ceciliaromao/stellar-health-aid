@@ -57,6 +57,18 @@
   max-height: 350px;
 }
 
+@media screen and (min-height: 768px) {
+  .embla__media {
+    max-height: 500px; /* aumenta a altura máxima em telas maiores */
+  }
+}
+
+@media screen and (min-height: 1024px) {
+  .embla__media {
+    max-height: 700px; /* aumenta ainda mais a altura máxima em telas muito altas */
+  }
+}
+
 .embla__slide__image {
   width: 100%;
   max-width: 100%;

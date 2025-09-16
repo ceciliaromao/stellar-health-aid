@@ -1,41 +1,68 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createCrossmint, CrossmintAuth } from "@crossmint/server-sdk";
 import { prisma } from "@/lib/prisma";
+import { createCrossmint, CrossmintAuth } from "@crossmint/server-sdk";
 
-export async function POST() {
-  const jar = await cookies();
-  const jwt = jar.get("crossmint-jwt")?.value;
-  const refreshToken = jar.get("crossmint-refresh-token")?.value;
+export async function POST(req: NextRequest) {
+  try {
+    // 1) Read cookies and validate session with Crossmint
+    const jar = await cookies();
+    const jwt = jar.get("crossmint-jwt")?.value;
+    const refreshToken = jar.get("crossmint-refresh-token")?.value;
 
-  if (!refreshToken) {
-    return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+    if (!refreshToken) {
+      return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+    }
+
+    if (!process.env.SERVER_CROSSMINT_API_KEY) {
+      return NextResponse.json({ ok: false, error: "SERVER_CROSSMINT_API_KEY not set" }, { status: 500 });
+    }
+
+    const crossmint = createCrossmint({ apiKey: process.env.SERVER_CROSSMINT_API_KEY });
+    const crossmintAuth = CrossmintAuth.from(crossmint);
+
+    const session = await crossmintAuth.getSession({ jwt, refreshToken });
+    const userId = session.userId;
+    if (!userId) {
+      return NextResponse.json({ ok: false, error: "Invalid session" }, { status: 401 });
+    }
+
+    // 2) Accept email from client body; fallback to profile email if not provided
+    let email: string | undefined;
+    try {
+      const body = await req.json().catch(() => null);
+      email = body?.email;
+    } catch {}
+
+    if (!email) {
+      try {
+        const profile = await crossmintAuth.getUser(userId);
+        email = profile.email ?? undefined;
+      } catch {}
+    }
+
+    if (!email) {
+      return NextResponse.json({ ok: false, error: "Email is required" }, { status: 400 });
+    }
+
+    // 3) Upsert user by crossmintUserId and update email
+    const user = await prisma.user.upsert({
+      where: { crossmintUserId: userId },
+      update: { email, updatedAt: new Date() },
+      create: { crossmintUserId: userId, email },
+      select: { id: true, email: true, publicKey: true, walletContractId: true },
+    });
+
+    // 4) Build response and refresh cookies if tokens rotated
+    const res = NextResponse.json({ ok: true, user });
+    const cookieOptions = { path: "/", httpOnly: true, sameSite: "lax" as const };
+    if ((session as any).jwt) res.cookies.set("crossmint-jwt", (session as any).jwt, cookieOptions);
+    if ((session as any).refreshToken) res.cookies.set("crossmint-refresh-token", (session as any).refreshToken, cookieOptions);
+
+    return res;
+  } catch (err) {
+    console.error("/api/auth/sync error", err);
+    return NextResponse.json({ ok: false, error: "internal error" }, { status: 500 });
   }
-
-  // 1) Validate/refresh the Crossmint session using the Server SDK
-  const crossmint = createCrossmint({ apiKey: process.env.SERVER_CROSSMINT_API_KEY! });
-  const crossmintAuth = CrossmintAuth.from(crossmint);
-
-  // getSession returns the trusted userId and (if needed) refreshed tokens
-  const { userId } = await crossmintAuth.getSession({ jwt, refreshToken });
-
-  // Optional: pull profile to store email (nice to have)
-  const profile = await crossmintAuth.getUser(userId); // requires users.read scope
-
-  if (!profile.email) {
-    // If no email is found, we can't proceed
-    return NextResponse.json({ ok: false, error: "No email found" }, { status: 401 });
-  }
-
-  // 2) Upsert user in your DB and capture the record
-  const user = await prisma.user.upsert({
-    where: { crossmintUserId: userId },
-    update: { email: profile.email },
-    create: {
-      crossmintUserId: userId,
-      email: profile.email,
-    },
-  });
-
-  return NextResponse.json({ success: true, userId });
 }
+

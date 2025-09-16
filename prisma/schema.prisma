@@ -14,31 +14,15 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-enum ChainType {
-  stellar
-}
-
-enum WalletType {
-  custodial
-  smart
-}
-
-model Wallet {
-  id            String     @id @default(cuid())
-  userId        String
-  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chainType     ChainType
-  walletType    WalletType
-  address       String     @unique
-  walletLocator String     @unique
-  createdAt     DateTime   @default(now())
-}
-
 model User {
   id                     String   @id @default(cuid())
   email                  String   @unique
-  crossmintUserId        String   @unique
-  wallets                Wallet[]
+  googleSub              String?  @unique
+  publicKey              String?  @unique // Stellar public address (G...)
+  walletContractId       String?  @unique // Smart wallet contract id
+  secretKeyCiphertext    String?  // Opcional: se armazenar a chave privada, guarde criptografada
+  accountStatus          String   @default("none") // none | created | funded | error
+  crossmintUserId        String?  @unique
   passkeyContractId      String?  @unique
   passkeyKeyIdBase64     String? // credentialId
   passkeyPublicKey       String? // se quiser armazenar
@@ -46,6 +30,28 @@ model User {
   lastError              String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
+}
+
+model ProviderRegistry {
+  id               String   @id @default(cuid())
+  contractId       String   @unique
+  adminPublicKey   String
+  network          String   @default("testnet")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  providers        Provider[]
+}
+
+model Provider {
+  id               String            @id @default(cuid())
+  registryId       String
+  registry         ProviderRegistry  @relation(fields: [registryId], references: [id], onDelete: Cascade)
+  name             String
+  description      String?
+  walletPublicKey  String            @unique // Stellar public key (G...)
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 model AppTxn {
