@@ -6,19 +6,27 @@ use soroban_sdk::{
     Address, Env, IntoVal,
 };
 
-fn create_test_addresses(env: &Env) -> (Address, Address, Address, Address, Address) {
+fn create_test_addresses(env: &Env) -> (Address, Address, Address, Address, Address, Address) {
     let user = Address::generate(env);
     let registry = Address::generate(env);
     let usdc_token = Address::generate(env);
     let defindex_contract = Address::generate(env);
     let provider = Address::generate(env);
-    (user, registry, usdc_token, defindex_contract, provider)
+    let unauthorized = Address::generate(env);
+    (
+        user,
+        registry,
+        usdc_token,
+        defindex_contract,
+        provider,
+        unauthorized,
+    )
 }
 
 #[test]
 fn test_constructor() {
     let env = Env::default();
-    let (user, registry, usdc_token, defindex_contract, _) = create_test_addresses(&env);
+    let (user, registry, usdc_token, defindex_contract, _, _) = create_test_addresses(&env);
 
     let contract_id = env.register(
         HealthAidWallet,
@@ -37,7 +45,7 @@ fn test_constructor() {
 #[should_panic(expected = "Error(Contract, #1004)")]
 fn test_deposit_defindex_failure() {
     let env = Env::default();
-    let (user, registry, usdc_token, defindex_contract, _) = create_test_addresses(&env);
+    let (user, registry, usdc_token, defindex_contract, _, _) = create_test_addresses(&env);
 
     let contract_id = env.register(
         HealthAidWallet,
@@ -66,7 +74,7 @@ fn test_deposit_defindex_failure() {
 #[should_panic(expected = "Error(Contract, #1003)")]
 fn test_deposit_invalid_amount_zero() {
     let env = Env::default();
-    let (user, registry, usdc_token, defindex_contract, _) = create_test_addresses(&env);
+    let (user, registry, usdc_token, defindex_contract, _, _) = create_test_addresses(&env);
 
     let contract_id = env.register(
         HealthAidWallet,
@@ -93,7 +101,7 @@ fn test_deposit_invalid_amount_zero() {
 #[should_panic(expected = "Error(Contract, #1003)")]
 fn test_deposit_invalid_amount_negative() {
     let env = Env::default();
-    let (user, registry, usdc_token, defindex_contract, _) = create_test_addresses(&env);
+    let (user, registry, usdc_token, defindex_contract, _, _) = create_test_addresses(&env);
 
     let contract_id = env.register(
         HealthAidWallet,
@@ -120,7 +128,8 @@ fn test_deposit_invalid_amount_negative() {
 #[should_panic(expected = "Error(Auth, InvalidAction)")]
 fn test_deposit_unauthorized() {
     let env = Env::default();
-    let (user, registry, usdc_token, defindex_contract, unauthorized) = create_test_addresses(&env);
+    let (user, registry, usdc_token, defindex_contract, _, unauthorized) =
+        create_test_addresses(&env);
 
     let contract_id = env.register(
         HealthAidWallet,
@@ -142,4 +151,143 @@ fn test_deposit_unauthorized() {
     }]);
 
     client.deposit(&amount);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #1005)")]
+fn test_pay_to_unapproved_provider() {
+    let env = Env::default();
+    let (user, registry, usdc_token, defindex_contract, provider, _) = create_test_addresses(&env);
+
+    let contract_id = env.register(
+        HealthAidWallet,
+        (&user, &registry, &usdc_token, &defindex_contract),
+    );
+    let client = HealthAidWalletClient::new(&env, &contract_id);
+
+    let amount = 1000i128;
+
+    env.mock_auths(&[MockAuth {
+        address: &user,
+        invoke: &MockAuthInvoke {
+            contract: &contract_id,
+            fn_name: "pay",
+            args: (provider.clone(), amount).into_val(&env),
+            sub_invokes: &[],
+        },
+    }]);
+
+    // This will fail because the defindex contract doesn't exist (FailedToGetBalance)
+    client.pay(&provider, &amount);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #1003)")]
+fn test_pay_invalid_amount_zero() {
+    let env = Env::default();
+    let (user, registry, usdc_token, defindex_contract, provider, _) = create_test_addresses(&env);
+
+    let contract_id = env.register(
+        HealthAidWallet,
+        (&user, &registry, &usdc_token, &defindex_contract),
+    );
+    let client = HealthAidWalletClient::new(&env, &contract_id);
+
+    let amount = 0i128;
+
+    env.mock_auths(&[MockAuth {
+        address: &user,
+        invoke: &MockAuthInvoke {
+            contract: &contract_id,
+            fn_name: "pay",
+            args: (provider.clone(), amount).into_val(&env),
+            sub_invokes: &[],
+        },
+    }]);
+
+    client.pay(&provider, &amount);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #1003)")]
+fn test_pay_invalid_amount_negative() {
+    let env = Env::default();
+    let (user, registry, usdc_token, defindex_contract, provider, _) = create_test_addresses(&env);
+
+    let contract_id = env.register(
+        HealthAidWallet,
+        (&user, &registry, &usdc_token, &defindex_contract),
+    );
+    let client = HealthAidWalletClient::new(&env, &contract_id);
+
+    let amount = -100i128;
+
+    env.mock_auths(&[MockAuth {
+        address: &user,
+        invoke: &MockAuthInvoke {
+            contract: &contract_id,
+            fn_name: "pay",
+            args: (provider.clone(), amount).into_val(&env),
+            sub_invokes: &[],
+        },
+    }]);
+
+    client.pay(&provider, &amount);
+}
+
+#[test]
+#[should_panic(expected = "Error(Auth, InvalidAction)")]
+fn test_pay_unauthorized() {
+    let env = Env::default();
+    let (user, registry, usdc_token, defindex_contract, provider, unauthorized) =
+        create_test_addresses(&env);
+
+    let contract_id = env.register(
+        HealthAidWallet,
+        (&user, &registry, &usdc_token, &defindex_contract),
+    );
+    let client = HealthAidWalletClient::new(&env, &contract_id);
+
+    let amount = 1000i128;
+
+    // Try to pay with unauthorized user
+    env.mock_auths(&[MockAuth {
+        address: &unauthorized,
+        invoke: &MockAuthInvoke {
+            contract: &contract_id,
+            fn_name: "pay",
+            args: (provider.clone(), amount).into_val(&env),
+            sub_invokes: &[],
+        },
+    }]);
+
+    client.pay(&provider, &amount);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #1005)")]
+fn test_pay_insufficient_balance() {
+    let env = Env::default();
+    let (user, registry, usdc_token, defindex_contract, provider, _) = create_test_addresses(&env);
+
+    let contract_id = env.register(
+        HealthAidWallet,
+        (&user, &registry, &usdc_token, &defindex_contract),
+    );
+    let client = HealthAidWalletClient::new(&env, &contract_id);
+
+    let amount = 1000i128;
+
+    env.mock_auths(&[MockAuth {
+        address: &user,
+        invoke: &MockAuthInvoke {
+            contract: &contract_id,
+            fn_name: "pay",
+            args: (provider.clone(), amount).into_val(&env),
+            sub_invokes: &[],
+        },
+    }]);
+
+    // This will fail because the defindex contract doesn't exist (FailedToGetBalance)
+    client.pay(&provider, &amount);
 }
