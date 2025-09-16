@@ -17,8 +17,7 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold mb-4">Product</h4>
           <ul className="space-y-2 text-gray-300 text-sm">
-            <li><Link href="/dashboard" className="hover:text-white">Dashboard</Link></li>
-            <li><Link href="/wallet" className="hover:text-white">Wallet</Link></li>
+            <li><Link href="dashboard/wallet" className="hover:text-white">Wallet</Link></li>
             <li><Link href="/community" className="hover:text-white">Community</Link></li>
           </ul>
         </div>
@@ -40,7 +39,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400 text-xs">
-        <p>&copy; 2024 Stellar HealthAid. All rights reserved.</p>
+        <p>&copy; 2025 Stellar HealthAid. All rights reserved.</p>
       </div>
     </footer>
   );

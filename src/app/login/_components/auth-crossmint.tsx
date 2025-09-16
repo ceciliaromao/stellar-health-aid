@@ -19,7 +19,7 @@ export function AuthCrossmint() {
   useEffect(() => {
     if (isLoggedIn) {
       // Redirect to dashboard after login
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard/wallet";
     } 
   }, [isLoggedIn]);
 
