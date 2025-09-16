@@ -602,6 +602,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84b26c544d002229e640969970a2e74021aadf6e2f96372b9c58eff97de08eb3"
 
 [[package]]
+name = "health-aid-wallet"
+version = "0.0.1"
+dependencies = [
+ "provider-registry",
+ "rand",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -882,6 +891,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778"
 dependencies = [
  "unicode-ident",
+]
+
+[[package]]
+name = "provider-registry"
+version = "0.0.1"
+dependencies = [
+ "soroban-sdk",
 ]
 
 [[package]]
