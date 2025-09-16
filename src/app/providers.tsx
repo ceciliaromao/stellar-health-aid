@@ -21,7 +21,7 @@ export function Providers({ children }: Readonly<{ children: React.ReactNode }>)
       apiKey={CLIENT_CROSSMINT_API_KEY}
     >
       <CrossmintAuthProvider
-        loginMethods={["email"]} // Incluir email também
+        loginMethods={["google"]} // Incluir email também
         appearance={customAppearance}
       >
         {/* Remover createOnLogin temporariamente para isolar o problema */}
