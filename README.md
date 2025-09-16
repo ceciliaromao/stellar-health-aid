@@ -36,14 +36,9 @@ Repository participating in **HackMeridian 2025**
     SSR (Server Side Rendering) and optimized routes.
   - **Stellar SDK**
     Integration with the Stellar blockchain for fast, low-cost transactions.
-  - **Polkadot.js / Substrate**
-    Interoperability and security in smart contracts (Rust).
+  - **Stellar Scaffold**
   - **Node.js**
     Backend, APIs, and support scripts.
-  - **Docker**
-    Containerization to facilitate deployment and scalability.
-  - **GitHub Actions**
-    CI/CD for automating tests, builds, and deploys.
 
 ### UI Design
   - **Figma**
@@ -84,19 +79,6 @@ Repository participating in **HackMeridian 2025**
 -----
 
 ## 🤝 DeFi Integrations
-
-### Blend
-
-  - **File:** [`src/libs/blend.ts`](https://www.google.com/search?q=src/libs/blend.ts)
-    Implements the connection to the Blend protocol for depositing, withdrawing, and tracking the yield of health funds.
-    Main functions:
-
-      - `initializeBlend`
-      - `getAvailablePools`
-      - `depositToBlend`
-      - `withdrawFromBlend`
-      - `getCurrentYieldRates`
-      - `autoCompoundYield`
 
   - **Usage Flow:**
     The integration is used within the wallet context in [`src/context/WalletProvider.tsx`](https://www.google.com/search?q=src/context/WalletProvider.tsx), allowing deposits and withdrawals via Blend directly from the user's dashboard.
