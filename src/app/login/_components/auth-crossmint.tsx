@@ -24,7 +24,7 @@ export function AuthCrossmint() {
   useEffect(() => {
     if (isLoggedIn && !startedRef.current) {
       startedRef.current = true;
-      // Após login, sincroniza e cria a carteira (sem fundar ainda)
+      // Após login, sincron'iza e cria a carteira (sem fundar ainda)
       onboarding.mutate({ storeSecret: false, deploy: false, fund: false });
     }
   }, [isLoggedIn]);
