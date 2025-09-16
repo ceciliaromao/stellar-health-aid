@@ -19,8 +19,8 @@ if (!STELLAR_SECRET) {
 const source = STELLAR_SECRET
   ? Keypair.fromSecret(STELLAR_SECRET)
   : (() => {
-      throw new Error("SOROBAN_SECRET_KEY not set");
-    })();
+    throw new Error("SOROBAN_SECRET_KEY not set");
+  })();
 const contractId = "CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W"; // reflector oracle contract
 const contract = new Contract(contractId);
 
@@ -28,7 +28,7 @@ export async function GET() {
   try {
     // Build a transaction to call a contract function
     let account = await server.getAccount(source.publicKey());
-    
+
     // Create an asset parameter - let's try USDT as an example
     const asset = nativeToScVal(['Other', 'BRL'], { type: 'symbol' }); // Adjust based on actual asset representation
 

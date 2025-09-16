@@ -7,21 +7,34 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { EmbeddedAuthForm, useAuth, useWallet } from "@crossmint/client-sdk-react-ui";
+import { EmbeddedAuthForm, useAuth } from "@crossmint/client-sdk-react-ui";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useWalletOnboarding } from "@/hooks/useWalletOnboarding";
+import { on } from "events";
 
 export function AuthCrossmint() {
   const { status: authStatus } = useAuth();
+  const onboarding = useWalletOnboarding();
+  const startedRef = useRef(false);
+  const router = useRouter();
 
   const isLoggedIn = authStatus === "logged-in";
 
   useEffect(() => {
-    if (isLoggedIn) {
-      // Redirect to dashboard after login
-      window.location.href = "/dashboard/wallet";
-    } 
+    if (isLoggedIn && !startedRef.current) {
+      startedRef.current = true;
+      // Após login, sincroniza e cria a carteira (sem fundar ainda)
+      onboarding.mutate({ storeSecret: false, deploy: false, fund: false });
+    }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (onboarding.isSuccess) {
+      router.replace("/dashboard");
+    }
+  }, [onboarding.isSuccess, router]);
 
   return (
     <Drawer>
@@ -38,6 +51,17 @@ export function AuthCrossmint() {
             <DialogTitle className="text-lg font-semibold text-center">Welcome</DialogTitle>
             <hr className="bb-2 mt-4" />
             <EmbeddedAuthForm />
+            {onboarding.isPending && (
+              <div className="mt-4 text-sm text-center">Configurando sua carteira...</div>
+            )}
+            {onboarding.isError && (
+              <div className="mt-4 text-sm text-center text-red-600">
+                Falha ao configurar a carteira. Tente novamente.
+              </div>
+            )}
+            {onboarding.isSuccess && (
+              <div className="mt-4 text-sm text-center">Carteira criada com sucesso! Redirecionando...</div>
+            )}
           </div>
         </div>
       </DrawerContent>
