@@ -12,16 +12,17 @@ async function syncAuth(email?: string) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(email ? { email } : {}),
+    credentials: "include",
   });
   if (!res.ok) throw new Error(`sync failed: ${res.status}`);
   return (await res.json()) as {
-    ok: boolean; 
-    user: { 
-      id: string; 
-      email: string; 
-      publicKey?: string; 
+    ok: boolean;
+    user: {
+      id: string;
+      email: string;
+      publicKey?: string;
       walletContractId?: string;
-    }
+    };
   };
 }
 
@@ -30,6 +31,7 @@ async function createWallet(userId: string, storeSecret = false) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, storeSecret }),
+    credentials: "include",
   });
   if (!res.ok) throw new Error(`create wallet failed: ${res.status}`);
   return (await res.json()) as { publicKey: string; storedSecret: boolean };
@@ -40,6 +42,7 @@ async function fundWallet(userId: string) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId }),
+    credentials: "include",
   });
   if (!res.ok) throw new Error(`fund failed: ${res.status}`);
   return (await res.json()) as { ok: true };
@@ -50,6 +53,7 @@ async function deployWallet(userId: string, overrides?: DeployOverrides) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, ...overrides }),
+    credentials: "include",
   });
   if (!res.ok) {
     const text = await res.text();
@@ -58,14 +62,40 @@ async function deployWallet(userId: string, overrides?: DeployOverrides) {
   return (await res.json()) as { ok: boolean; contractId?: string };
 }
 
+async function logout() {
+  try {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+  } catch { }
+}
+
 export function useWalletOnboarding() {
   return useMutation({
     mutationKey: ["wallet-onboarding"],
-    mutationFn: async (params: { email?: string; storeSecret?: boolean; overrides?: DeployOverrides; deploy?: boolean; fund?: boolean }) => {
-      const { email, storeSecret = false, overrides, fund = true } = params;
+    mutationFn: async (params: {
+      email?: string;
+      storeSecret?: boolean;
+      overrides?: DeployOverrides;
+      deploy?: boolean;
+      fund?: boolean;
+      forceDeploy?: boolean;
+    }) => {
+      const { email, storeSecret = false, overrides, forceDeploy = false } = params;
+
       const { user } = await syncAuth(email);
+      console.log("useWalletOnboarding user", user);
+
+      // Se email foi selecionado e não bate com a sessão atual, faz logout para limpar estado
+      if (email && user.email && email !== user.email) {
+        await logout();
+        throw new Error(
+          `Sessão ativa pertence a ${user.email}. Saí e entre novamente com ${email}.`
+        );
+      }
+
+      if (!user) throw new Error("user not found after sync");
+
       if (user.publicKey && user.walletContractId) {
-        // already has a wallet
+        // já possui wallet/contrato; não força deploy
         return { userId: user.id, publicKey: user.publicKey, walletContractId: user.walletContractId };
       }
 
@@ -76,15 +106,18 @@ export function useWalletOnboarding() {
       } else {
         create = { publicKey: user.publicKey, storedSecret: false };
       }
-      if (!user.walletContractId) {
-        console.log("Deploying wallet contract for user without walletContractId");
-        await deployWallet(user.id, overrides);
-      }
-      if (fund) {
+
+      let deployedContractId: string | undefined = user.walletContractId;
+      if (!deployedContractId) {
+        console.log("Deploying wallet contract");
+        const res = await deployWallet(user.id, overrides);
+        if (res.contractId) deployedContractId = res.contractId;
+
         console.log("Funding wallet for user");
         await fundWallet(user.id);
       }
-      return { userId: user.id, publicKey: create.publicKey, walletContractId: user.walletContractId };
+
+      return { userId: user.id, publicKey: create.publicKey, walletContractId: deployedContractId };
     },
   });
 }
