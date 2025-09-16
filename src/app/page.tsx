@@ -56,7 +56,7 @@ export default function LandingPage() {
             <Heart className="h-8 w-8 text-health-primary" />
             <span className="text-2xl font-bold text-gray-900">HealthAid</span>
           </div>
-          <Link href="/onboarding">
+          <Link href="/login">
             <Button>Get Started</Button>
           </Link>
         </div>
@@ -74,7 +74,7 @@ export default function LandingPage() {
             healthcare. When emergencies strike, our community has your back.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/onboarding">
+            <Link href="/login">
               <Button size="lg">
                 Start Your Health Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -208,7 +208,7 @@ export default function LandingPage() {
           <p className="text-xl mb-8 text-green-100">
             Join thousands who have already started their decentralized health journey.
           </p>
-          <Link href="/onboarding">
+          <Link href="/login">
             <Button size="lg" variant="secondary" className="bg-white text-health-primary hover:bg-gray-100">
               Create Your Health Wallet
               <ArrowRight className="ml-2 h-5 w-5" />
