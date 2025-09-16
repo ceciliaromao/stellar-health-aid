@@ -109,12 +109,6 @@ Repository participating in **HackMeridian 2025**
 
   - **API:** [`src/app/api/reflector/prices/route.ts`](https://www.google.com/search?q=src/app/api/reflector/prices/route.ts)
     A Next.js endpoint that uses the Stellar Soroban SDK to get updated asset prices, integrating the Reflector protocol for swap operations and price queries.
-
-### Soroswap
-
-  - **Implicit via Reflector and Stellar SDK:**
-    The use of asset swaps is handled through contracts and endpoints that interact with Soroswap functionalities, utilizing the Stellar SDK and price endpoints.
-
 -----
 
 ## 🚦 How to Run
