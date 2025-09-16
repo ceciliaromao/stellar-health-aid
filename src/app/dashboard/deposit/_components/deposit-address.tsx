@@ -4,6 +4,7 @@ import { WarningBox } from "../../../../components/molecules/warning-box";
 import QRCodeBox from "./qr-code-box";
 import Image from "next/image";
 import { Copy } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 interface DepositAddressProps {
   asset: string;
@@ -20,8 +21,8 @@ export default function DepositAddress({ asset, addressData, onBack }: DepositAd
   return (
     <div className="p-6 flex flex-col gap-6">
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={onBack}>
-          ←
+        <Button variant="ghost" size="icon" onClick={onBack} aria-label="Voltar">
+          <ChevronLeft className="w-6 h-6" />
         </Button>
         <h2 className="text-xl font-bold">Endereço {asset}</h2>
       </div>
