@@ -2,6 +2,18 @@
  * Donation and community support-related type definitions
  */
 
+// Import or define MedicalCategory
+export type MedicalCategory = "cardiology" | "oncology" | "neurology" | "general" | "pediatrics";
+
+// Define MedicalDocument
+export interface MedicalDocument {
+  id: string;
+  name: string;
+  type: string; // e.g., "pdf", "image"
+  url: string;
+  uploadedAt: Date;
+}
+
 export interface DonationRequest {
   id: string
   patientId: string
@@ -21,7 +33,7 @@ export interface DonationRequest {
   // Timeline
   createdAt: Date
   deadline?: Date
-  daysRemaining?: number
+  documents: MedicalDocument[] // Define or import MedicalDocument
 
   // Status and verification
   status: DonationRequestStatus
@@ -30,7 +42,6 @@ export interface DonationRequest {
   verifiedBy?: string
 
   // Supporting documents
-  documents: MedicalDocument[]
 
   // Community engagement
   donorCount: number
