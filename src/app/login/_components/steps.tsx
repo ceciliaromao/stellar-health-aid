@@ -3,7 +3,6 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { EmbeddedAuthForm } from "@crossmint/client-sdk-react-ui";
 import { Button } from "@/components/ui/button";
-import { ProgressDots } from "@/components/onboarding/ProgressDots";
 import { Carousel } from "./carousel/carousel";
 import { AuthCrossmint } from "./auth-crossmint";
 
