@@ -1,6 +1,5 @@
 import type React from "react"
 import { NavigationBar } from "./wallet/_components/navigation-bar"
-// import { ProtectedRoute } from "@/components/organisms/ProtectedRoute"
 
 interface DashboardLayoutProps { readonly children: React.ReactNode }
 

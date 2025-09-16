@@ -15,12 +15,12 @@ interface NavItem {
 const items: NavItem[] = [
   { key: "home", label: "Home", href: "/dashboard/wallet", icon: <Home size={22} strokeWidth={2} /> },
   { key: "deposit", label: "Depósito", href: "/dashboard/deposit", icon: <ArrowDownToLine size={22} strokeWidth={2} /> },
-  { key: "pay", label: "Pagar", href: "/dashboard/pay", icon: <ArrowUpToLine size={22} strokeWidth={2} /> },
+  { key: "pay", label: "Pagar", href: "/dashboard/payment", icon: <ArrowUpToLine size={22} strokeWidth={2} /> },
   { key: "profile", label: "Perfil", href: "/dashboard/profile", icon: <User2 size={22} strokeWidth={2} /> },
 ];
 
 // Ação central flutuante (QR). Mantida separada para não duplicar "Pagar".
-const centralAction = { href: "/dashboard/scan", icon: <QrCode size={24} />, label: "Scan" };
+const centralAction = { href: "/dashboard/payment", icon: <QrCode size={24} />, label: "Scan" };
 
 export function NavigationBar() {
   const pathname = usePathname();
@@ -33,17 +33,28 @@ export function NavigationBar() {
           {/* Grupo esquerdo: Home, Depósito */}
             {items.slice(0,2).map(item => {
               const active = pathname === item.href || pathname.startsWith(item.href);
-              return (
+              return active ? (
+                <span
+                  key={item.key}
+                  aria-current="page"
+                  className={cn(
+                    "flex flex-col items-center gap-1 flex-1 text-xs font-medium select-none cursor-default",
+                    "text-primary"
+                  )}
+                >
+                  <span className="h-6 flex items-center [&>svg]:stroke-primary">{item.icon}</span>
+                  {item.label}
+                </span>
+              ) : (
                 <Link
                   key={item.key}
                   href={item.href}
                   className={cn(
                     "flex flex-col items-center gap-1 flex-1 text-xs font-medium transition-colors",
-                    active ? "text-primary" : "text-muted-foreground"
+                    "text-muted-foreground"
                   )}
-                  aria-current={active ? "page" : undefined}
                 >
-                  <span className={cn("h-6 flex items-center", active ? "[&>svg]:stroke-primary" : "opacity-70")}>{item.icon}</span>
+                  <span className="h-6 flex items-center opacity-70">{item.icon}</span>
                   {item.label}
                 </Link>
               );
@@ -52,17 +63,28 @@ export function NavigationBar() {
             <div className="flex-1" aria-hidden="true" />
             {items.slice(2).map(item => {
               const active = pathname === item.href || pathname.startsWith(item.href);
-              return (
+              return active ? (
+                <span
+                  key={item.key}
+                  aria-current="page"
+                  className={cn(
+                    "flex flex-col items-center gap-1 flex-1 text-xs font-medium select-none cursor-default",
+                    "text-primary"
+                  )}
+                >
+                  <span className="h-6 flex items-center [&>svg]:stroke-primary">{item.icon}</span>
+                  {item.label}
+                </span>
+              ) : (
                 <Link
                   key={item.key}
                   href={item.href}
                   className={cn(
                     "flex flex-col items-center gap-1 flex-1 text-xs font-medium transition-colors",
-                    active ? "text-primary" : "text-muted-foreground"
+                    "text-muted-foreground"
                   )}
-                  aria-current={active ? "page" : undefined}
                 >
-                  <span className={cn("h-6 flex items-center", active ? "[&>svg]:stroke-primary" : "opacity-70")}>{item.icon}</span>
+                  <span className="h-6 flex items-center opacity-70">{item.icon}</span>
                   {item.label}
                 </Link>
               );
@@ -71,14 +93,23 @@ export function NavigationBar() {
 
         {/* Botão central flutuante (QR) */}
         <div className="pointer-events-auto absolute -top-6 left-1/2 -translate-x-1/2">
-          <Link href={centralAction.href} className="block" aria-label={centralAction.label}>
-            <span className="relative inline-flex items-center justify-center h-16 w-16">
+          {pathname.startsWith(centralAction.href) ? (
+            <span className="relative inline-flex items-center justify-center h-16 w-16 select-none cursor-default" aria-current="page">
               <span className="absolute inset-0 rounded-full bg-primary shadow-lg" />
               <span className="relative flex flex-col items-center justify-center h-16 w-16 rounded-full bg-primary text-black">
                 {centralAction.icon}
               </span>
             </span>
-          </Link>
+          ) : (
+            <Link href={centralAction.href} className="block" aria-label={centralAction.label}>
+              <span className="relative inline-flex items-center justify-center h-16 w-16">
+                <span className="absolute inset-0 rounded-full bg-primary shadow-lg" />
+                <span className="relative flex flex-col items-center justify-center h-16 w-16 rounded-full bg-primary text-black">
+                  {centralAction.icon}
+                </span>
+              </span>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
