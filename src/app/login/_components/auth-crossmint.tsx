@@ -72,7 +72,8 @@ export function AuthCrossmint() {
       <DrawerContent>
         <div className="w-full flex flex-col justify-center items-center gap-4 p-4">
           <div className="sm:max-w-md">
-            <DialogTitle className="text-2xl font-bold text-center">You're almost there!</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-center">You're almost there!</DialogTitle>
+            <hr />
             <EmbeddedAuthForm />
           </div>
         </div>
