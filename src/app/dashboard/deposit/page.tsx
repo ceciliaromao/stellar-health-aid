@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import DepositAssetSelect from "./_components/deposit-asset-select";
 import DepositAddress from "./_components/deposit-address";

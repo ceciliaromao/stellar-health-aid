@@ -5,7 +5,7 @@ export default function WalletPage() {
   return(
     <div className="max-w-2xl mx-auto space-y-8 pb-4">
       <WalletOverview name="" balanceBRL={490.05} yieldBRL={40} apyPercent={5} />
-      <HistoryList />
+  <HistoryList limit={5} />
     </div>
   );
 }
