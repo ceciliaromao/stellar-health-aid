@@ -1,5 +1,6 @@
 "use client";
 
+import { SyncProvider } from "@/context/sync-provider";
 import { CrossmintAuthProvider, CrossmintProvider, CrossmintWalletProvider } from "@crossmint/client-sdk-react-ui";
 
 if (!process.env.NEXT_PUBLIC_CROSSMINT_API_KEY) {
@@ -28,7 +29,9 @@ export function Providers({ children }: Readonly<{ children: React.ReactNode }>)
         <CrossmintWalletProvider
           appearance={customAppearance}
         >
-          {children}
+          <SyncProvider>
+            {children}
+          </SyncProvider>
         </CrossmintWalletProvider>
       </CrossmintAuthProvider>
     </CrossmintProvider>

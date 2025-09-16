@@ -67,7 +67,7 @@ export interface RegistrationOptions {
  * Check if WebAuthn is supported in the current browser
  */
 export function isWebAuthnSupported(): boolean {
-  return !!(window.PublicKeyCredential && window.PublicKeyCredential.create && window.PublicKeyCredential.get)
+  return !!(window.PublicKeyCredential && (window.PublicKeyCredential as any).create)
 }
 
 /**

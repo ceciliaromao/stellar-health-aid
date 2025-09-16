@@ -11,16 +11,16 @@
  * - STELLAR_SECRET_KEY (server-side only)
  */
 
-import { Server, Keypair, TransactionBuilder, Operation, Asset, Networks, BASE_FEE, Memo } from "stellar-sdk"
+import Server, { Keypair, TransactionBuilder, Operation, Asset, Networks, BASE_FEE, Memo } from "stellar-sdk"
 
 // Network configuration
 const NETWORK = process.env.NEXT_PUBLIC_STELLAR_NETWORK === "mainnet" ? Networks.PUBLIC : Networks.TESTNET
 const HORIZON_URL = process.env.NEXT_PUBLIC_STELLAR_HORIZON_URL || "https://horizon-testnet.stellar.org"
 
 // Initialize Stellar server
-let server: Server | null = null
+let server: typeof Server | null = null
 
-export function getStellarServer(): Server {
+export function getStellarServer(): typeof Server {
   if (!server) {
     server = new Server(HORIZON_URL)
   }
