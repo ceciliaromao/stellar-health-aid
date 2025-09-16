@@ -17,10 +17,6 @@ doctest = false
 
 [dependencies]
 soroban-sdk = { workspace = true }
-stellar-tokens = { workspace = true }
-stellar-macros = { workspace = true }
-uuid = { version = "1.0", features = ["v4", "serde"] }
-serde = { version = "1.0", features = ["derive"] }
 provider-registry = { workspace = true }
 
 [dev-dependencies]
