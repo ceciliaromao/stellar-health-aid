@@ -7,6 +7,12 @@ Repository participating in **HackMeridian 2025**
 > This project has not been tested to its limits. We are in the process of improving it. Everything is being done on the testnet.
 > Please take this into consideration.
 
+
+## 🔗 Example Deposit Transaction
+
+You can view a **sample deposit transaction** executed on the Stellar testnet via Stellar Expert:
+
+👉 [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/SEU_HASH_AQUI)
 -----
 
 ## ✨ Overview
@@ -110,21 +116,25 @@ Repository participating in **HackMeridian 2025**
 
 ## 🤝 DeFi Integrations
 
-  - **Usage Flow:**
-    The integration is used within the wallet context in [`src/context/WalletProvider.tsx`](https://www.google.com/search?q=src/context/WalletProvider.tsx), allowing deposits and withdrawals via Blend directly from the user's dashboard.
+- **Usage Flow:**  
+  The integration is used within the wallet context, allowing deposits and withdrawals via Blend directly from the user's dashboard.
 
 ### Defindex
+- **Rust File:** 
+  The `get_defindex_contract` function and balancing methods implement the bridge to Defindex at the smart contract layer.
 
-  - **Rust File:** [`contracts/health-aid-wallet/src/contract.rs`](https://www.google.com/search?q=contracts/health-aid-wallet/src/contract.rs)
-    The `get_defindex_contract` function and balancing methods implement the bridge to Defindex at the smart contract layer.
-
-  - **Backend:**
-    The `defindex` parameter is used in the contract deployment endpoints, as seen in [`src/app/api/contracts/wallet/deploy/route.ts`](https://www.google.com/search?q=src/app/api/contracts/wallet/deploy/route.ts).
+- **Backend:**  
+  The `defindex` parameter is used in the contract deployment endpoints.
 
 ### Reflector
+- **API:**
+  A Next.js endpoint that uses the Stellar Soroban SDK to get updated asset prices, integrating the Reflector protocol for swap operations and price queries.
 
-  - **API:** [`src/app/api/reflector/prices/route.ts`](https://www.google.com/search?q=src/app/api/reflector/prices/route.ts)
-    A Next.js endpoint that uses the Stellar Soroban SDK to get updated asset prices, integrating the Reflector protocol for swap operations and price queries.
+### Crossmint
+- **Frontend & Backend:**  
+  Crossmint is integrated to provide **user onboarding and wallet creation with social login (Google)**.  
+  This allows new users to create and access their **Health Aid Wallet** seamlessly without needing to manage private keys manually.  
+
 -----
 
 ## 🚦 How to Run
