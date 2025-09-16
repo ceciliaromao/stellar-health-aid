@@ -29,12 +29,16 @@ export async function middleware(request: NextRequest) {
   const allowedOrigins = [
     'https://stellar-health-aid.vercel.app',
     'http://localhost:3000',
+    'http://127.0.0.1:3000',
   ];
 
-  const corsOptions = {
+  const corsOptions: Record<string, string> = {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-form-token, X-Requested-With',
     'Access-Control-Allow-Credentials': 'true',
+    // Permite popups de OAuth (evita bloqueios de window.close/postMessage)
+    'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    'Cross-Origin-Embedder-Policy': 'unsafe-none',
   };
 
   // Check the origin from the request
@@ -45,10 +49,10 @@ export async function middleware(request: NextRequest) {
   const isPreflight = request.method === 'OPTIONS';
 
   if (isPreflight) {
-    const preflightHeaders = {
+    const preflightHeaders: Record<string, string> = {
       ...(isAllowedOrigin && { 'Access-Control-Allow-Origin': origin }),
       ...corsOptions,
-    };
+    } as Record<string, string>;
     return NextResponse.json({}, { headers: preflightHeaders });
   }
 
