@@ -4,7 +4,6 @@
 //! Users can deposit USDC, create funds for specific procedures, and make payments
 //! only to approved healthcare providers.
 
-use provider_registry::ProviderRegistryClient;
 use soroban_sdk::{
     auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
     contract, contracterror, contractimpl, contracttype, panic_with_error, symbol_short, token,
@@ -188,18 +187,24 @@ impl HealthAidWallet {
         let user = Self::get_user(e);
         user.require_auth();
 
+        // e.current_contract_address().require_auth();
+
         if amount <= 0 {
             panic_with_error!(e, HealthAidWalletError::InvalidAmount);
         }
+
+        let usdc_token = Self::get_usdc_token(e);
+
+        let client = token::Client::new(e, &usdc_token);
+
+        client.transfer(&user, &e.current_contract_address(), &amount);
 
         let defindex_contract = Self::get_defindex_contract(e);
 
         let deposit_args: Vec<Val> = vec![
             e,
-            amount.into_val(e),
-            0i128.into_val(e),
+            amount.clone().into_val(e),
             e.current_contract_address().into_val(e),
-            true.into_val(e),
         ];
 
         e.authorize_as_current_contract(vec![
@@ -209,6 +214,23 @@ impl HealthAidWallet {
                     contract: defindex_contract.clone().into(),
                     fn_name: Symbol::new(&e, "deposit"),
                     args: deposit_args.into_val(e),
+                },
+                sub_invocations: vec![&e],
+            }),
+        ]);
+
+        e.authorize_as_current_contract(vec![
+            &e,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: usdc_token.clone().into(),
+                    fn_name: Symbol::new(&e, "transfer"),
+                    args: vec![
+                        e,
+                        e.current_contract_address().into_val(e),
+                        defindex_contract.into_val(e),
+                        amount.into_val(e),
+                    ],
                 },
                 sub_invocations: vec![&e],
             }),
@@ -245,9 +267,18 @@ impl HealthAidWallet {
 
         // Check if destination is an approved provider
         let registry_address = Self::get_registry_address(e);
-        let registry_client = ProviderRegistryClient::new(e, &registry_address);
+        let is_provider = e
+            .try_invoke_contract::<bool, InvokeError>(
+                &registry_address,
+                &Symbol::new(&e, "is_provider"),
+                vec![&e, destination.into_val(e)],
+            )
+            .unwrap_or_else(|_| {
+                panic_with_error!(e, HealthAidWalletError::FailedToWithdraw);
+            })
+            .unwrap();
 
-        if !registry_client.is_provider(&destination) {
+        if !is_provider {
             panic_with_error!(e, HealthAidWalletError::DestinationNotAllowed);
         }
 
